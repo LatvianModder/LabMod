@@ -30,7 +30,7 @@ public class GuiStart extends GuiBasic
 		super.onRender();
 		
 		Renderer.enableTexture();
-		String txt = "Space Forge";
+		String txt = "LabMod";
 		float s = MathHelper.renderSin(0.03F, 3F, 3.5F);
 		
 		Font.inst.alpha = 200;
