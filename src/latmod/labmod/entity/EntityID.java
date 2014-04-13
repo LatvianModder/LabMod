@@ -1,12 +1,11 @@
 package latmod.labmod.entity;
 import java.lang.reflect.*;
-
 import latmod.core.util.*;
 import latmod.labmod.world.*;
 
 public class EntityID
 {
-	private static final World fakeWorld = new WorldClient();
+	private static final World fakeWorld = new World();
 	
 	public static FastMap<Integer, Class<? extends Entity>> entityMap;
 	public static FastMap<Integer, String> entityNameMap;

@@ -6,7 +6,6 @@ import latmod.labmod.client.entity.EntityRenderer;
 import latmod.labmod.client.gui.*;
 import latmod.labmod.client.gui.ingame.*;
 import latmod.labmod.cmd.*;
-import latmod.labmod.net.packets.PacketChat;
 import latmod.labmod.world.*;
 
 public class EntityPlayerSP extends EntityPlayer // Entity
@@ -18,12 +17,12 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 	public boolean renderGui = true;
 	public DebugPage debugPage = null;
 	
-	public EntityPlayerSP(WorldClient w)
+	public EntityPlayerSP(World w)
 	{
-		super(w, w.client.clientID);
+		super(w);
 		posX = w.rand.nextFloat() * 200F;
 		posZ = w.rand.nextFloat() * 200F;
-		username = GameOptions.props.username;
+		username = "LatvianModder";
 		collisionBox = new AABB.BottomCentred(posX, posY, posZ, sizeH, sizeV, sizeH);
 		
 		for(KeyBinding k : GameOptions.keyBindings)
@@ -213,9 +212,8 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 			return;
 		}
 		
-		//GuiIngame.printChat(Command.NAME + username + ": " + Command.FINE + s);
-		//LatCore.println(s, username, "Chat");
-		worldObj.sendPacket(new PacketChat(Command.NAME + username + ": " + Command.FINE + s));
+		GuiIngame.printChat(Command.NAME + username + ": " + Command.FINE + s);
+		LatCore.println(s, username, "Chat");
 	}
 	
 	public boolean onAttacked(Entity from, float hp)

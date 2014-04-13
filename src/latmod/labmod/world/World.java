@@ -1,22 +1,35 @@
 package latmod.labmod.world;
 import java.util.*;
 
+import latmod.core.model.*;
+import latmod.core.rendering.*;
 import latmod.core.util.*;
 import latmod.core.util.Timer;
+import latmod.labmod.ClientUtils;
+import latmod.labmod.client.particles.*;
 import latmod.labmod.entity.*;
-import latmod.labmod.net.*;
-import latmod.labmod.net.packets.PacketPlayerLogout;
 
-public abstract class World // WorldServer // WorldClient
+public class World
 {
-	public final Side side;
 	public String serverName = "Loading...";
 	public FastList<AABB> AABBList = new FastList<AABB>();
 	
 	public FastMap<Integer, Entity> entities = new FastMap<Integer, Entity>();
 	public FastMap<Integer, Entity> entitiesToBeAdded = new FastMap<Integer, Entity>();
 	
-	public FastMap<Integer, EntityPlayerMP> playerMap = new FastMap<Integer, EntityPlayerMP>();
+	public EntityPlayerSP playerSP;
+	
+	@SuppressWarnings("unchecked")
+	public FastList<Particle>[] particles = new FastList[PartLayer.VALUES.length];
+	
+	public int renderedEntities = 0;
+	public int renderedParticles = 0;
+	public int skyColor = 0xFF0F0F0F;
+	
+	public int nextEWID = 0;
+	
+	public OBJModel skybox;
+	public Texture skyboxTex;
 	
 	public Random rand = new Random();
 	public long tick = 0L;
@@ -24,21 +37,119 @@ public abstract class World // WorldServer // WorldClient
 	public long packetsReceived = 0L;
 	public long packetsSent = 0L;
 	
-	public World(Side s)
+	public World()
 	{
-		side = s;
+		for(int i = 0; i < particles.length; i++)
+		particles[i] = new FastList<Particle>();
+		
+		playerSP = new EntityPlayerSP(this);
 	}
 	
-	public abstract INet getNet();
-	public abstract void sendPacket(Packet p);
-	public abstract void spawnEntity(Entity e);
-	public abstract void removeEntity(int wid);
-	public abstract void onUpdate(Timer t);
-	public abstract void onClientData(NetClient c) throws Exception;
-	public abstract void processPacket(Packet p);
+	public void spawnEntity(Entity e)
+	{
+		e.worldID = ++nextEWID;
+		e.isDirty = true;
+		entitiesToBeAdded.put(e.worldID, e);
+	}
+	
+	public void onUpdate(Timer t)
+	{
+		resetCollisionBoxes();
+		
+		entities.putAll(entitiesToBeAdded);
+		entitiesToBeAdded.clear();
+		
+		for(int i = 0; i < entities.size(); i++)
+		entities.get(i).onUpdate(t);
+		
+		for(int i = 0; i < entities.size(); i++)
+		{
+			Entity e = entities.get(i);
+			
+			if(e.flags[Entity.IS_DEAD])
+			entities.remove(i);
+			else if(e.isDirty)
+			{
+				e.isDirty = false;
+				//
+			}
+		}
+		
+		tick++;
+	}
 	
 	public void onStopped()
 	{
+	}
+	
+	public void preRender()
+	{
+		Renderer3D.getRenderDistance = 1000F;
+		
+		if(skybox == null)
+		{
+			skybox = ClientUtils.inst.loadModel("/models/skybox.obj");
+			skyboxTex = Renderer.getTexture("world/skybox.jpg");
+		}
+	}
+	
+	public void postRender()
+	{
+	}
+	
+	public void onRender()
+	{
+		Renderer.background(skyColor);
+		
+		Renderer3D.disable3DAlpha();
+		Renderer.enableTexture();
+		
+		if(playerSP != null)
+		{
+			Renderer3D.disableDepth();
+			Renderer.push();
+			Renderer.translate(Renderer3D.camPos, 1F);
+			Renderer.scale(30F);
+			
+			Renderer3D.disableCulling();
+			Renderer.setTexture(skyboxTex);
+			skybox.renderAll();
+			
+			Renderer.pop();
+			Renderer3D.enableDepth();
+		}
+		
+		Renderer3D.enableCulling();
+		
+		renderedEntities = 0;
+		for(Entity e : entities)
+		if(e.isVisible())
+		{
+			e.onRender();
+			renderedEntities++;
+		}
+		
+		Renderer3D.disableCulling();
+		
+		renderedParticles = 0;
+		
+		Renderer.disableTexture();
+		
+		for(Particle p : particles[PartLayer.NO_TEX.INDEX]) if(p != null && p.isVisible())
+		{ p.onRender(); renderedParticles++; }
+		
+		Renderer.enableTexture();
+		
+		Renderer.setTexture("gui/particles.png");
+		
+		for(Particle p : particles[PartLayer.TEX.INDEX]) if(p != null && p.isVisible())
+		{ p.onRender(); renderedParticles++; }
+		
+		for(Particle p : particles[PartLayer.CUSTOM.INDEX]) if(p != null && p.isVisible())
+		{ p.onRender(); renderedParticles++; }
+		
+		if(playerSP != null)
+		playerSP.onRender();
 	}
 	
 	public final void resetCollisionBoxes()
@@ -60,9 +171,6 @@ public abstract class World // WorldServer // WorldClient
 	public final FastList<AABB> getAllAABBsAtPoint(float x, float y, float z)
 	{ return AABB.getAllAABBsAtPoint(AABBList, x, y, z); }
 	
-	public final EntityPlayerMP getPlayer(int i)
-	{ return playerMap.get(i); }
-	
 	public final Entity getFromWID(int wid)
 	{
 		for(int i = 0; i < entities.size(); i++)
@@ -72,11 +180,5 @@ public abstract class World // WorldServer // WorldClient
 		}
 		
 		return null;
-	}
-
-	public void removePlayer(EntityPlayerMP ep)
-	{
-		playerMap.removeValue(ep);
-		sendPacket(new PacketPlayerLogout(ep));
 	}
 }

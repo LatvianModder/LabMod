@@ -57,7 +57,6 @@ public class GuiLoadingScreen extends GuiBasic
 				if(timer == 555)
 				{
 					Main.inst.openGui(null);
-					Main.inst.checkForInitJoin();
 				}
 			}
 		}

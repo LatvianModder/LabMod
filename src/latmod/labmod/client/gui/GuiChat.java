@@ -41,7 +41,7 @@ public class GuiChat extends GuiBasic implements IKeyListener.Pressed
 		}
 		else if(key == Keyboard.KEY_RETURN)
 		{
-			MainClient.inst.worldSP.playerSP.printChat(text);
+			Main.inst.worldSP.playerSP.printChat(text);
 			Main.inst.openGui(null);
 		}
 		else if(LatCore.isASCIIChar(keyChar))

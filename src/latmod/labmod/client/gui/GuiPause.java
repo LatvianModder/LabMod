@@ -30,9 +30,7 @@ public class GuiPause extends GuiBasic
 	{
 		if(i == 0)
 		{
-			MainClient.inst.stop(false);
-			while(MainClient.inst.isCreated());
-			Main.inst.openGui(null);
+			Main.inst.closeWorld();
 		}
 		else if(i == 1) Main.inst.openGui(null);
 		else if(i == 2) Main.inst.openGui(new GuiOptions());

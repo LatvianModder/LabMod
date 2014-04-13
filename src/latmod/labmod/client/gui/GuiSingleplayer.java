@@ -2,17 +2,17 @@ package latmod.labmod.client.gui;
 import latmod.core.gui.*;
 import latmod.labmod.*;
 
-public class GuiHelp extends GuiBasic
+public class GuiSingleplayer extends GuiBasic
 {
-	public GuiHelp()
-	{
-		super(Main.inst);
-	}
+	public GuiSingleplayer()
+	{ super(Main.inst); }
 	
 	public void loadWidgets()
 	{
 		Button.setCentred(true, false);
 		addButton(0, width / 2, height - 56, 200, 48, "Back");
+		
+		Main.inst.openWorld();
 	}
 	
 	public void onWidgetEvent(int i, Widget w, String event, Object... args)

@@ -76,7 +76,7 @@ public class ClientUtils
 		
 		if(destroyClient)
 		{
-			MainClient.inst.stop(true);
+			Main.inst.destroy();
 			destroyClient = false;
 		}
 		

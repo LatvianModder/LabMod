@@ -57,26 +57,26 @@ public class GuiIngame extends GuiBasic implements IKeyListener.Pressed, IKeyLis
 	{ return true; }
 	
 	public EntityPlayerSP player()
-	{ return MainClient.inst.worldSP.playerSP; }
+	{ return Main.inst.worldSP.playerSP; }
 	
 	public void onEscPressed()
 	{ Main.inst.openGui(new GuiPause()); }
 	
 	public Cancel onKeyPressed(int key, char keyChar)
-	{ if(MainClient.inst.hasPlayer()) return PlayerInputHandler.inst.keyPressed(player(), key, keyChar); return Cancel.FALSE; }
+	{ if(Main.inst.hasPlayer()) return PlayerInputHandler.inst.keyPressed(player(), key, keyChar); return Cancel.FALSE; }
 	
 	public void onKeyReleased(int key)
-	{ if(MainClient.inst.hasPlayer()) PlayerInputHandler.inst.keyReleased(player(), key, 1L); }
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.keyReleased(player(), key, 1L); }
 	
 	public void onMouseScrolled(LMMouse m)
-	{ if(MainClient.inst.hasPlayer()) PlayerInputHandler.inst.mouseScrolled(player(), m); }
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mouseScrolled(player(), m); }
 
 	public void onMouseReleased(LMMouse m)
-	{ if(MainClient.inst.hasPlayer()) PlayerInputHandler.inst.mouseReleased(player(), m, 1L); }
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mouseReleased(player(), m, 1L); }
 
 	public Cancel onMousePressed(LMMouse m)
-	{ if(MainClient.inst.hasPlayer()) return PlayerInputHandler.inst.mousePressed(player(), m); return Cancel.FALSE; }
+	{ if(Main.inst.hasPlayer()) return PlayerInputHandler.inst.mousePressed(player(), m); return Cancel.FALSE; }
 	
 	public void onMouseMoved(LMMouse m)
-	{ if(MainClient.inst.hasPlayer()) PlayerInputHandler.inst.mouseMoved(player(), m); }
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mouseMoved(player(), m); }
 }

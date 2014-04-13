@@ -13,14 +13,11 @@ public class GuiStart extends GuiBasic
 	{
 		Button.setCentred(true, false);
 		
-		String serverTxt = MainServer.inst.isCreated() ? "Stop Server" : "Start Server";
-		
 		int h0 = height / 2; int h1 = 48;
-		addWidget(1, new TextButton(this, serverTxt,	h0 + h1 * -3).setLeftAlign(false));
-		addWidget(2, new TextButton(this, "Join Game",	h0 + h1 * -2).setLeftAlign(false));
-		addWidget(3, new TextButton(this, "Options",	h0 + h1 * -1).setLeftAlign(false));
-		addWidget(4, new TextButton(this, "Help",		h0 + h1 *  0).setLeftAlign(false));
-		addWidget(0, new TextButton(this, "Exit Game",	h0 + h1 *  2).setLeftAlign(false));
+		addWidget(1, new TextButton(this, "Play",	h0 + h1 * -3).setLeftAlign(false));
+		addWidget(2, new TextButton(this, "Options",	h0 + h1 * -2).setLeftAlign(false));
+		addWidget(3, new TextButton(this, "Help",		h0 + h1 *  -1).setLeftAlign(false));
+		addWidget(0, new TextButton(this, "Exit Game",	h0 + h1 *  1).setLeftAlign(false));
 	}
 	
 	public void onRender()
@@ -50,18 +47,9 @@ public class GuiStart extends GuiBasic
 		if(event == Button.PRESSED)
 		{
 			if(i == 0) Main.inst.destroy();
-			else if(i == 1)
-			{
-				if(MainServer.inst.isCreated())
-				{
-					MainServer.inst.stop();
-					Main.inst.openGui(null);
-				}
-				else Main.inst.openGui(new GuiServer());
-			}
-			else if(i == 2) Main.inst.openGui(new GuiJoinServer());
-			else if(i == 3) Main.inst.openGui(new GuiOptions());
-			else if(i == 4) Main.inst.openGui(new GuiHelp());
+			else if(i == 1) Main.inst.openGui(new GuiSingleplayer());
+			else if(i == 2) Main.inst.openGui(new GuiOptions());
+			else if(i == 3) Main.inst.openGui(new GuiHelp());
 		}
 	}
 	

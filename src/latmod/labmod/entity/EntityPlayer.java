@@ -5,7 +5,6 @@ import latmod.labmod.world.*;
 public abstract class EntityPlayer extends Entity
 {
 	public String username = null;
-	public final int playerID;
 	public Camera camera;
 	public int health = 100;
 	public int maxHealth = 100;
@@ -14,10 +13,9 @@ public abstract class EntityPlayer extends Entity
 	public float distanceMovedT = 0F;
 	public boolean isRunning = false;
 	
-	public EntityPlayer(World w, int pid)
+	public EntityPlayer(World w)
 	{
 		super(w);
-		playerID = pid;
 		sizeH = 0.75F;
 		sizeV = 1.75F;
 		camera = new Camera(this);

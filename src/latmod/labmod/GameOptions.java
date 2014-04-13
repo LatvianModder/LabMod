@@ -17,7 +17,6 @@ public class GameOptions
 	public static KeyBinding KEY_FULLSCREEN = new KeyBinding("fullscreen", Keyboard.KEY_F11);
 	
 	public static KeyBinding KEY_CHAT = new KeyBinding("player.chat", Keyboard.KEY_SLASH);
-	public static KeyBinding KEY_UPGRADES = new KeyBinding("player.upgrades", Keyboard.KEY_U);
 	public static KeyBinding KEY_SHOP = new KeyBinding("player.shop", Keyboard.KEY_B);
 	public static KeyBinding KEY_CAMERA = new KeyBinding("player.camera", Keyboard.KEY_F5);
 	public static KeyBinding KEY_HIDE_GUI = new KeyBinding("player.hideGui", Keyboard.KEY_F1);
@@ -52,7 +51,6 @@ public class GameOptions
 			
 			KEY_CHAT.register();
 			KEY_SHOP.register();
-			KEY_UPGRADES.register();
 			KEY_HIDE_GUI.register();
 			KEY_DEBUG.register();
 			KEY_CAMERA.register();

@@ -9,6 +9,7 @@ import latmod.labmod.client.gui.*;
 import latmod.labmod.client.gui.ingame.*;
 import latmod.labmod.cmd.*;
 import latmod.labmod.entity.*;
+import latmod.labmod.world.World;
 
 public class Main extends LMFrame implements IKeyListener.Pressed
 {
@@ -20,6 +21,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	private static int defaultWidth = 800, defaultHeight = 600;
 	public static FastList<Class<?>> allClasses = new FastList<Class<?>>();
 	private GuiBasic openedGui;
+	public World worldSP = null;
 	
 	public static void main(String[] args)
 	{
@@ -69,37 +71,16 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		Event.DEFAULT.addListener(this);
 		
 		ClientUtils.inst = new ClientUtils();
-		MainServer.inst = new MainServer();
-		MainClient.inst = new MainClient();
 		
 		if(mainArgs.keys.contains("-noLoading"))
 		{
 			loadServer();
 			loadClient();
 			openGui(new GuiStart());
-			checkForInitJoin();
 		}
 		else
 		{
 			openGui(new GuiLoadingScreen());
-		}
-	}
-	
-	public void checkForInitJoin()
-	{
-		String openSP = getArg("-joinServer", null);
-		if(openSP != null)
-		{
-			MainClient.inst.create();
-			MainClient.inst.start(openSP);
-			openGui(new GuiPause());
-		}
-		
-		String openMP = getArg("-startServer", null);
-		if(openMP != null)
-		{
-			MainServer.inst.start(openMP, 16);
-			openGui(new GuiPause());
 		}
 	}
 	
@@ -139,31 +120,30 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	
 	public void onFrameUpdate(Timer t)
 	{
-		if(MainServer.inst.isRunning())
-		MainServer.inst.worldMP.onUpdate(t);
-		
-		if(MainClient.inst.isRunning())
-		MainClient.inst.worldSP.onUpdate(t);
+		if(worldSP != null)
+		worldSP.onUpdate(t);
 	}
 	
 	public void onRender()
 	{
+		if(updateTimer == null) return;
+		
 		Renderer.background(20);
 		
-		if(MainClient.inst.isRunning())
+		if(worldSP != null)
 		{
-			MainClient.inst.worldSP.preRender();
+			worldSP.preRender();
 			Renderer.enter3D();
 			Renderer.recolor();
-			MainClient.inst.worldSP.onRender();
-			MainClient.inst.worldSP.postRender();
+			worldSP.onRender();
+			worldSP.postRender();
 		}
 		
 		// Render 2D Stuff //
 		Renderer.enter2D();
 		Renderer.recolor();
 		
-		if(MainClient.inst.hasPlayer()) MainClient.inst.worldSP.playerSP.renderGui();
+		if(worldSP != null && worldSP.playerSP != null) worldSP.playerSP.renderGui();
 		openedGui.onRender();
 		
 		ClientUtils.inst.onUpdate();
@@ -198,7 +178,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	
 	public void openGui(GuiBasic g)
 	{
-		if(g == null) g = (MainClient.inst.isCreated() ? new GuiIngame() : new GuiStart());
+		if(g == null) g = (worldSP != null ? new GuiIngame() : new GuiStart());
 		if(openedGui != null)
 		{
 			g.prevGui = openedGui.getClass();
@@ -230,8 +210,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	
 	public void onDestroyed()
 	{
-		MainServer.inst.stop();
-		MainClient.inst.stop(true);
+		closeWorld();
 		super.onDestroyed();
 	}
 	
@@ -240,5 +219,20 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		if(openedGui.prevGui == null) openGui(null);
 		try { openGui(openedGui.prevGui.newInstance()); }
 		catch(Exception e) { e.printStackTrace(); openGui(null); }
+	}
+	
+	public boolean hasPlayer()
+	{ return worldSP != null && worldSP.playerSP != null; }
+	
+	public void openWorld()
+	{
+		worldSP = new World();
+	}
+	
+	public void closeWorld()
+	{
+		if(worldSP != null)
+		worldSP.onStopped();
+		worldSP = null;
 	}
 }

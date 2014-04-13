@@ -5,7 +5,7 @@ import latmod.labmod.client.gui.*;
 import latmod.labmod.entity.*;
 
 import org.lwjgl.input.Keyboard;
-
+//LatCore
 public class PlayerInputHandler
 {
 	public static final PlayerInputHandler inst = new PlayerInputHandler();
@@ -48,8 +48,6 @@ public class PlayerInputHandler
 			else if(key == GameOptions.KEY_CHAT.key)
 				Main.inst.openGui(new GuiChat());
 			else if(key == GameOptions.KEY_SHOP.key)
-				;
-			else if(key == GameOptions.KEY_UPGRADES.key)
 				;
 			else if(key == GameOptions.KEY_HIDE_GUI.key)
 				ep.renderGui = !ep.renderGui;
