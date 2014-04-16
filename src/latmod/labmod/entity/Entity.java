@@ -1,38 +1,36 @@
 package latmod.labmod.entity;
 import java.util.Iterator;
-
+import com.google.gson.annotations.Expose;
 import latmod.core.nbt.*;
 import latmod.core.util.*;
+import latmod.labmod.World;
 import latmod.labmod.client.entity.*;
-import latmod.labmod.world.*;
 
 public abstract class Entity extends Vertex
 {
 	public static final int IS_DEAD = 0;
 	public static final int IN_WALL = 1;
 	public static final int NO_CLIP = 2;
-	public static final int BOOST = 3;
+	public static final int ON_GROUND = 3;
+	public static final int BOOST = 4;
 	
 	public World worldObj;
 	public boolean[] flags = new boolean[8];
-	public float rotYaw, rotPitch;
-	public boolean isDirty = false;
+	@Expose public float rotYaw, rotPitch;
 	public float sizeH, sizeV;
 	public AABB collisionBox = null;
-	public float motX, motY, motZ;
+	@Expose public float motX, motY, motZ;
 	public int worldID;
-	protected String displayName = getClass().getSimpleName();
+	@Expose public String displayName = getClass().getSimpleName();
 	
 	public Entity(World w)
-	{
-		worldObj = w;
-	}
+	{ worldObj = w; }
 	
 	public int hashCode()
 	{ return worldID; }
 	
 	public String toString()
-	{ return displayName + ": " + worldID; }
+	{ return "[ E" + EntityID.getEID(this) + ", W" + worldID + " ]: " + displayName; }
 	
 	public boolean equals(Object o)
 	{ return (o == this) || ((o instanceof Entity) ? ((o.hashCode() == hashCode()) ? true : false) : false); }
@@ -58,6 +56,8 @@ public abstract class Entity extends Vertex
 	public void setDead()
 	{ flags[IS_DEAD] = true; }
 	
+	public void onDeath() { }
+	
 	public void setMotion(float x, float y, float z)
 	{ motX = x;  posY = y; posZ = z; }
 	
@@ -66,45 +66,55 @@ public abstract class Entity extends Vertex
 	
 	public void moveTowards(float x, float z, float s)
 	{
-		if((x == 0F && z == 0F) || s == 0F) return;
+		if(x == 0F && z == 0F) return;
 		float f = MathHelper.sqrt2(x, z);
-		addMotion(x / f * s, 0F, z / f * s);
+		motX += x / f * s;
+		motZ += z / f * s;
 	}
 	
 	public void moveEntity()
 	{
-		if(motX == 0F && motY == 0F && motZ == 0F) return;
+		flags[ON_GROUND] = false;
+		
+		AABB b = worldObj.getAABBInBox(collisionBox, 0F, motY, 0F);
+		if(b != null && !flags[NO_CLIP])
+		{
+			if(motY <= 0F)
+			{
+				posY = b.posY2;
+				flags[ON_GROUND] = true;
+			}
+			
+			motY = 0F;
+		}
+		else motY -= worldObj.gravity;
 		
 		if(!flags[NO_CLIP])
 		{
-			AABB bx = worldObj.getAABBInBox(collisionBox, motX * 2F, 0F, 0F);
+			AABB bx = worldObj.getAABBInBox(collisionBox, motX * 2F, 0.01F, 0F);
 			if(bx != null)
 			{
-				motX = 0F;
+				if(motY != 0F || bx.posY2 - collisionBox.posY1 > 0.5F)
+				motX = 0F; else
+				{
+					posY = bx.posY2;
+				}
 			}
 			
-			AABB bz = worldObj.getAABBInBox(collisionBox, 0F, 0F, motZ * 2F);
+			AABB bz = worldObj.getAABBInBox(collisionBox, 0F, 0.01F, motZ * 2F);
 			if(bz != null)
 			{
-				motZ = 0F;
-			}
-			
-			AABB by = worldObj.getAABBInBox(collisionBox, 0F, motY * 2F, 0F);
-			if(by != null)
-			{
-				motY = 0F;
+				if(motY != 0F || bz.posY2 - collisionBox.posY1 > 0.5F)
+				motZ = 0F; else
+				{
+					posY = bz.posY2;
+				}
 			}
 		}
 		
-		if(motX != 0F || motY != 0F || motZ != 0F)
-		{
-			posX += motX;
-			posY += motY;
-			posZ += motZ;
-			isDirty = true;
-		}
-		
-		collisionBox.set(posX, posY, posZ, sizeH, sizeV, sizeH);
+		posX += motX;
+		posY += motY;
+		posZ += motZ;
 	}
 	
 	public void addCollisionBoxes(FastList<AABB> b)
@@ -113,7 +123,7 @@ public abstract class Entity extends Vertex
 		else collisionBox = new AABB.BottomCentred(posX, posY, posZ, sizeH, sizeV, sizeH);
 		collisionBox.owner = this;
 		collisionBox.solid = false;
-		b.add(collisionBox);
+		if(b != null) b.add(collisionBox);
 	}
 	
 	public void readFromNBT(NBTMap map)

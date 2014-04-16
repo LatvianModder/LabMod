@@ -13,6 +13,7 @@ public class GuiSingleplayer extends GuiBasic
 		addButton(0, width / 2, height - 56, 200, 48, "Back");
 		
 		Main.inst.openWorld();
+		Main.inst.openGui(null);
 	}
 	
 	public void onWidgetEvent(int i, Widget w, String event, Object... args)

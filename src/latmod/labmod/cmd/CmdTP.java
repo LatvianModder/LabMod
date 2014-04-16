@@ -1,11 +1,11 @@
 package latmod.labmod.cmd;
-import latmod.core.rendering.*;
 import latmod.core.util.*;
-import latmod.labmod.world.*;
+import latmod.labmod.*;
+import latmod.labmod.entity.EntityPlayer;
 
 public class CmdTP extends Command
 {
-	public String onCommand(World w, CommandSender sender, String[] args, String argsUnsplit)
+	public String onCommand(World w, EntityPlayer ep, String[] args, String argsUnsplit) throws Exception
 	{
 		if(args.length == 3)
 		{
@@ -13,20 +13,12 @@ public class CmdTP extends Command
 			float y = Float.parseFloat(args[1]);
 			float z = Float.parseFloat(args[2]);
 			
-			sender.player.setPos(x, y, z);
-			sender.player.isDirty = true;
-		}
-		else if(args.length == 1)
-		{
+			ep.setPos(x, y, z);
+			print("Teleported to " + LatCore.stripFloat(x, y, z));
+			
 			return null;
 		}
 		
 		return "Invalid arguments!";
 	}
-
-	public TextColor getArgCol(int i, String s)
-	{ return FINE; }
-
-	public Side getCommandSide()
-	{ return Side.CLIENT; }
 }

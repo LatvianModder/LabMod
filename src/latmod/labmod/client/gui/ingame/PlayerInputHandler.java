@@ -25,7 +25,6 @@ public class PlayerInputHandler
 				if(m - lm <= 300)
 				{
 					doubleKeyPressed(ep, kb);
-					ep.isDirty = true;
 					return Cancel.TRUE;
 				}
 			}
@@ -52,7 +51,6 @@ public class PlayerInputHandler
 			else if(key == GameOptions.KEY_HIDE_GUI.key)
 				ep.renderGui = !ep.renderGui;
 			
-			ep.isDirty = true;
 			return Cancel.TRUE;
 		}
 		
@@ -79,7 +77,6 @@ public class PlayerInputHandler
 	{
 		if(!Main.inst.getGui().allowPlayerInput()) return Cancel.FALSE;
 		
-		ep.isDirty = true;
 		return Cancel.TRUE;
 	}
 	

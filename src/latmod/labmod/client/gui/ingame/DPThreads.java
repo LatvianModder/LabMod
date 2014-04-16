@@ -1,9 +1,8 @@
 package latmod.labmod.client.gui.ingame;
 import java.util.*;
-
 import latmod.core.util.*;
+import latmod.labmod.*;
 import latmod.labmod.entity.*;
-import latmod.labmod.world.*;
 
 public class DPThreads extends DebugPage
 {

@@ -1,8 +1,9 @@
 package latmod.labmod.cmd;
 import latmod.core.rendering.*;
 import latmod.core.util.*;
+import latmod.labmod.*;
 import latmod.labmod.client.gui.*;
-import latmod.labmod.world.*;
+import latmod.labmod.entity.EntityPlayer;
 
 public abstract class Command
 {
@@ -22,11 +23,11 @@ public abstract class Command
 	{
 		LatCore.println("Loading Commands...", LOGGER);
 		
-		register("say", new CmdSay());
 		register("tps", new CmdTPS());
-		register("hurt", new CmdHurt());
+		register("hurt", new CmdHP());
 		register("spawn", new CmdSpawn());
 		register("tp", new CmdTP());
+		register("gravity", new CmdGravity());
 		
 		LatCore.println("Loaded " + commands.size() + " command" + LatCore.numEnding(commands.size()), LOGGER);
 	}
@@ -38,9 +39,7 @@ public abstract class Command
 		commands.put(s, c);
 	}
 	
-	public abstract String onCommand(World w, CommandSender sender, String[] args, String argsUnsplit);
-	public abstract TextColor getArgCol(int i, String s);
-	public abstract Side getCommandSide();
+	public abstract String onCommand(World w, EntityPlayer ep, String[] args, String argsUnsplit) throws Exception;
 	
 	public void print(Object o)
 	{ GuiIngame.printChat(String.valueOf(o)); }

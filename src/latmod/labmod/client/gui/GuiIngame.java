@@ -57,7 +57,7 @@ public class GuiIngame extends GuiBasic implements IKeyListener.Pressed, IKeyLis
 	{ return true; }
 	
 	public EntityPlayerSP player()
-	{ return Main.inst.worldSP.playerSP; }
+	{ return Main.inst.worldObj.player; }
 	
 	public void onEscPressed()
 	{ Main.inst.openGui(new GuiPause()); }

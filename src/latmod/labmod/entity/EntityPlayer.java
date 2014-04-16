@@ -1,24 +1,26 @@
 package latmod.labmod.entity;
 import latmod.core.nbt.*;
-import latmod.labmod.world.*;
+import latmod.labmod.*;
 
 public abstract class EntityPlayer extends Entity
 {
 	public String username = null;
-	public Camera camera;
+	public Cursor cursor;
 	public int health = 100;
 	public int maxHealth = 100;
 	public float hurtTimer = 0F;
 	public float distanceMovedH = 0F;
 	public float distanceMovedT = 0F;
 	public boolean isRunning = false;
+	public float eyeHeight;
 	
 	public EntityPlayer(World w)
 	{
 		super(w);
 		sizeH = 0.75F;
 		sizeV = 1.75F;
-		camera = new Camera(this);
+		eyeHeight = 1.65F;
+		cursor = new Cursor(this);
 		username = "[Unknown]";
 	}
 	

@@ -1,17 +1,14 @@
 package latmod.labmod.client.gui;
 import org.lwjgl.input.*;
-
 import latmod.core.gui.*;
 import latmod.core.input.*;
 import latmod.core.rendering.*;
 import latmod.core.util.*;
 import latmod.labmod.*;
-import latmod.labmod.cmd.Command;
 
 public class GuiChat extends GuiBasic implements IKeyListener.Pressed
 {
 	public String text = "";
-	public String visibleText = "";
 	
 	public GuiChat() { super(null); }
 	public void loadWidgets() { Keyboard.enableRepeatEvents(true); }
@@ -25,7 +22,7 @@ public class GuiChat extends GuiBasic implements IKeyListener.Pressed
 		Renderer.enableTexture();
 		Renderer.recolor();
 		
-		String txt = visibleText;
+		String txt = text;
 		if(Time.millis() % 1000 > 500) txt += '_';
 		Font.inst.drawShadedText(4, height - 20, txt);
 		
@@ -41,36 +38,13 @@ public class GuiChat extends GuiBasic implements IKeyListener.Pressed
 		}
 		else if(key == Keyboard.KEY_RETURN)
 		{
-			Main.inst.worldSP.playerSP.printChat(text);
+			Main.inst.worldObj.player.executeCommand(text);
 			Main.inst.openGui(null);
 		}
 		else if(LatCore.isASCIIChar(keyChar))
 		{
 			text += keyChar;
 		}
-		
-		visibleText = text;
-		
-		if(text.startsWith("/") && text.length() > 1)
-		{
-			String[] s = LatCore.split(text.substring(1), " ");
-			
-			Command c = Command.commands.get(s[0]);
-			
-			if(c == null) visibleText = Command.ERR + text;
-			else
-			{
-				visibleText = '/' + s[0] + ' ';
-				
-				for(int i = 1; i < s.length; i++)
-				{
-					TextColor col = c.getArgCol(i - 1, s[i]);
-					visibleText += col + s[i] + ' ';
-				}
-			}
-		}
-		
-		LatCore.println(LatCore.strip(LatCore.split("A B  C D   E", " ")));
 		
 		return Cancel.TRUE;
 	}

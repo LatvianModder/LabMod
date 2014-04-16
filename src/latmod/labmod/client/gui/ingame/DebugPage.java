@@ -1,7 +1,7 @@
 package latmod.labmod.client.gui.ingame;
 import latmod.core.util.*;
+import latmod.labmod.World;
 import latmod.labmod.entity.*;
-import latmod.labmod.world.*;
 
 public abstract class DebugPage
 {

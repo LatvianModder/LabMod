@@ -1,7 +1,7 @@
 package latmod.labmod.client.particles;
 import latmod.core.rendering.*;
+import latmod.labmod.World;
 import latmod.labmod.entity.*;
-import latmod.labmod.world.*;
 
 public class Particle extends Entity
 {

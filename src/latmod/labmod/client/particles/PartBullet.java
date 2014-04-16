@@ -1,7 +1,7 @@
 package latmod.labmod.client.particles;
 import latmod.core.rendering.*;
 import latmod.core.util.*;
-import latmod.labmod.world.*;
+import latmod.labmod.*;
 
 public class PartBullet extends Particle
 {

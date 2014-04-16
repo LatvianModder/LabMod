@@ -1,15 +1,16 @@
 package latmod.labmod;
 import org.lwjgl.input.*;
+
 import latmod.core.input.*;
 import latmod.core.rendering.*;
 import latmod.core.sound.*;
 import latmod.core.util.*;
+import latmod.labmod.client.ClientUtils;
 import latmod.labmod.client.entity.*;
 import latmod.labmod.client.gui.*;
 import latmod.labmod.client.gui.ingame.*;
 import latmod.labmod.cmd.*;
 import latmod.labmod.entity.*;
-import latmod.labmod.world.World;
 
 public class Main extends LMFrame implements IKeyListener.Pressed
 {
@@ -21,7 +22,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	private static int defaultWidth = 800, defaultHeight = 600;
 	public static FastList<Class<?>> allClasses = new FastList<Class<?>>();
 	private GuiBasic openedGui;
-	public World worldSP = null;
+	public World worldObj = null;
 	
 	public static void main(String[] args)
 	{
@@ -72,7 +73,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		
 		ClientUtils.inst = new ClientUtils();
 		
-		if(mainArgs.keys.contains("-noLoading"))
+		if(mainArgs.keys.contains("-noload"))
 		{
 			loadServer();
 			loadClient();
@@ -120,8 +121,8 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	
 	public void onFrameUpdate(Timer t)
 	{
-		if(worldSP != null)
-		worldSP.onUpdate(t);
+		if(worldObj != null)
+		worldObj.onUpdate(t);
 	}
 	
 	public void onRender()
@@ -130,20 +131,20 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		
 		Renderer.background(20);
 		
-		if(worldSP != null)
+		if(worldObj != null && worldObj.worldRenderer != null)
 		{
-			worldSP.preRender();
+			worldObj.worldRenderer.preRender();
 			Renderer.enter3D();
 			Renderer.recolor();
-			worldSP.onRender();
-			worldSP.postRender();
+			worldObj.worldRenderer.onRender();
+			worldObj.worldRenderer.postRender();
 		}
 		
 		// Render 2D Stuff //
 		Renderer.enter2D();
 		Renderer.recolor();
 		
-		if(worldSP != null && worldSP.playerSP != null) worldSP.playerSP.renderGui();
+		if(worldObj != null && worldObj.player != null) worldObj.player.renderGui();
 		openedGui.onRender();
 		
 		ClientUtils.inst.onUpdate();
@@ -178,7 +179,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	
 	public void openGui(GuiBasic g)
 	{
-		if(g == null) g = (worldSP != null ? new GuiIngame() : new GuiStart());
+		if(g == null) g = (worldObj != null ? new GuiIngame() : new GuiStart());
 		if(openedGui != null)
 		{
 			g.prevGui = openedGui.getClass();
@@ -190,6 +191,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		
 		openedGui = g;
 		onResized();
+		
 		Mouse.setGrabbed(g.allowPlayerInput());
 	}
 	
@@ -222,17 +224,20 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	}
 	
 	public boolean hasPlayer()
-	{ return worldSP != null && worldSP.playerSP != null; }
+	{ return worldObj != null && worldObj.player != null; }
 	
 	public void openWorld()
 	{
-		worldSP = new World();
+		worldObj = new World();
+		worldObj.createWorld();
+		openGui(null);
 	}
 	
 	public void closeWorld()
 	{
-		if(worldSP != null)
-		worldSP.onStopped();
-		worldSP = null;
+		if(worldObj != null)
+		worldObj.onStopped();
+		worldObj = null;
+		openGui(null);
 	}
 }

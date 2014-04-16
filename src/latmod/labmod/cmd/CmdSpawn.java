@@ -1,12 +1,11 @@
 package latmod.labmod.cmd;
-import latmod.core.rendering.*;
 import latmod.core.util.*;
+import latmod.labmod.*;
 import latmod.labmod.entity.*;
-import latmod.labmod.world.*;
 
 public class CmdSpawn extends Command
 {
-	public String onCommand(World w, CommandSender sender, String[] args, String argsUnsplit)
+	public String onCommand(World w, EntityPlayer ep, String[] args, String argsUnsplit) throws Exception
 	{
 		if(args == null || args.length <= 0) return "Missing EntityID";
 		
@@ -14,16 +13,11 @@ public class CmdSpawn extends Command
 		
 		if(id != 0)
 		{
-			Vertex pos = sender.player.camera;
+			Vertex pos = ep.cursor;
 			
-			try
-			{
-				Entity e = EntityID.createEntity(w, id);
-				e.setPos(pos.posX, pos.posY, pos.posZ);
-				w.spawnEntity(e);
-			}
-			catch(Exception e)
-			{ e.printStackTrace(); return "Failed to contruct entity!"; }
+			Entity e = EntityID.createEntity(w, id);
+			e.setPos(pos.posX, pos.posY, pos.posZ);
+			w.spawnEntity(e);
 			
 			print("Spawned '" + args[0] + "' @ " + LatCore.stripFloat(pos.posX, pos.posY, pos.posZ));
 			return null;
@@ -31,13 +25,4 @@ public class CmdSpawn extends Command
 		
 		return "Invalid EntityID '" + args[0] + "'!";
 	}
-
-	public TextColor getArgCol(int i, String s)
-	{
-		if(i == 0) return EntityID.entityNameMap.values.contains(s) ? NAME : ERR;
-		else return ERR;
-	}
-	
-	public Side getCommandSide()
-	{ return Side.CLIENT; }
 }

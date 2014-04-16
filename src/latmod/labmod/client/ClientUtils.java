@@ -1,7 +1,8 @@
-package latmod.labmod;
+package latmod.labmod.client;
 import latmod.core.model.*;
 import latmod.core.rendering.*;
 import latmod.core.util.*;
+import latmod.labmod.Main;
 import latmod.labmod.client.entity.*;
 import latmod.labmod.client.gui.*;
 import latmod.labmod.client.gui.ingame.DebugPage;

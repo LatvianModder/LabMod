@@ -3,25 +3,27 @@ import java.util.Random;
 
 import latmod.core.util.*;
 
-public class Camera extends Vertex
+public class Cursor extends Vertex
 {
 	public EntityPlayer player = null;
 	public float dist = 0F;
 	public float maxDist = 3F;
 	public AABB aabbHit = null;
-	public Entity entityHit = null;
+	public Entity lookEntity = null;
 	public Vertex relPos = new Vertex(0F, 0F, 0F);
+	public RenderSide side = RenderSide.NONE;
 	
-	public Camera(EntityPlayer e)
+	public Cursor(EntityPlayer e)
 	{ player = e; }
 	
 	public void update()
 	{
 		float step = 1F / 150F;
+		aabbHit = null;
+		side = RenderSide.NONE;
+		lookEntity = null;
 		
 		Vertex dir = MathHelper.getLook(player.rotYaw, player.rotPitch);
-		
-		aabbHit = null;
 		
 		for(float d = 0F; d < 1F; d += step)
 		{
@@ -38,7 +40,7 @@ public class Camera extends Vertex
 			if(box != null)
 			{
 				aabbHit = box;
-				entityHit = (aabbHit.owner != null && aabbHit.owner instanceof Entity) ? (Entity)aabbHit.owner : null;
+				lookEntity = (aabbHit.owner != null && aabbHit.owner instanceof Entity) ? (Entity)aabbHit.owner : null;
 				return;
 			}
 		}

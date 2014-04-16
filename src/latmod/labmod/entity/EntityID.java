@@ -1,7 +1,7 @@
 package latmod.labmod.entity;
 import java.lang.reflect.*;
 import latmod.core.util.*;
-import latmod.labmod.world.*;
+import latmod.labmod.*;
 
 public class EntityID
 {

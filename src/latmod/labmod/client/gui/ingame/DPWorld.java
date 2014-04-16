@@ -3,7 +3,6 @@ import latmod.core.util.*;
 import latmod.labmod.*;
 import latmod.labmod.client.particles.PartLayer;
 import latmod.labmod.entity.*;
-import latmod.labmod.world.*;
 
 public class DPWorld extends DebugPage
 {
@@ -15,16 +14,17 @@ public class DPWorld extends DebugPage
 		al.add("Name: " + w.serverName);
 		al.add("AABB count: " + w.AABBList.size());
 		
-		al.add("Rendered Entities: " + Main.inst.worldSP.renderedEntities + " / " + w.entities.size());
-		int partMax = 0;
-		partMax += Main.inst.worldSP.particles[PartLayer.NO_TEX.INDEX].size();
-		partMax += Main.inst.worldSP.particles[PartLayer.TEX.INDEX].size();
-		partMax += Main.inst.worldSP.particles[PartLayer.CUSTOM.INDEX].size();
-		al.add("Rendered Particles: " + Main.inst.worldSP.renderedParticles + " / " + partMax);
+		al.add("Rendered Entities: " + Main.inst.worldObj.worldRenderer.renderedEntities + " / " + w.entities.size());
+		
+		{
+			int partMax = 0;
+			
+			for(int i = 0; i < PartLayer.VALUES.length; i++)
+			partMax += Main.inst.worldObj.worldRenderer.particles[i].size();
+			
+			al.add("Rendered Particles: " + Main.inst.worldObj.worldRenderer.renderedParticles + " / " + partMax);
+		}
 		
 		al.add("Entities Spawned: " + w.entities.size());
-		
-		al.add("Packets received: " + w.packetsReceived);
-		al.add("Packets sent: " + w.packetsSent);
 	}
 }

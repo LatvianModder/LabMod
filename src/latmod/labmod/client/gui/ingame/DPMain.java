@@ -1,8 +1,8 @@
 package latmod.labmod.client.gui.ingame;
 import latmod.core.util.*;
 import latmod.labmod.Main;
+import latmod.labmod.World;
 import latmod.labmod.entity.EntityPlayerSP;
-import latmod.labmod.world.World;
 
 public class DPMain extends DebugPage
 {

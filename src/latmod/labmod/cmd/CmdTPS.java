@@ -1,12 +1,11 @@
 package latmod.labmod.cmd;
-import latmod.core.rendering.*;
 import latmod.core.util.*;
 import latmod.labmod.*;
-import latmod.labmod.world.*;
+import latmod.labmod.entity.EntityPlayer;
 
 public class CmdTPS extends Command
 {
-	public String onCommand(World w, CommandSender sender, String[] args, String argsUnsplit)
+	public String onCommand(World w, EntityPlayer ep, String[] args, String argsUnsplit)
 	{
 		if(args.length > 0)
 		{
@@ -26,10 +25,4 @@ public class CmdTPS extends Command
 		
 		return "TPS argument is missing!";
 	}
-	
-	public TextColor getArgCol(int i, String s)
-	{ return FINE; }
-	
-	public Side getCommandSide()
-	{ return Side.UNIVERSAL; }
 }

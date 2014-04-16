@@ -25,7 +25,7 @@ public abstract class GuiBasic extends Gui
 	public void addButton(int id, float x, float y, float w, float h, String s)
 	{
 		Button b = new Button(this, x, y, w, h, s);
-		if(Main.inst.worldSP != null) b.setColor(0xFFC1C1C1);
+		if(Main.inst.worldObj != null) b.setColor(0xFFC1C1C1);
 		addWidget(id, b);
 	}
 	
@@ -41,7 +41,7 @@ public abstract class GuiBasic extends Gui
 	
 	public void renderBackground()
 	{
-		if(Main.inst.worldSP == null)
+		if(Main.inst.worldObj == null)
 		{
 			if(doRenderStars())
 			{
