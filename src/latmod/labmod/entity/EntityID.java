@@ -3,26 +3,21 @@ import java.lang.reflect.*;
 import latmod.core.util.*;
 import latmod.labmod.*;
 
-public class EntityID
+public class EntityID implements Comparable<EntityID>
 {
 	private static final World fakeWorld = new World();
 	
-	public static FastMap<Integer, Class<? extends Entity>> entityMap;
-	public static FastMap<Integer, String> entityNameMap;
-	public static FastMap<Integer, Entity> entityStaticMap;
+	public static final FastList<EntityID> entityList = new FastList<EntityID>();
 	
 	private static final String LOGGER = "EntityID";
 	
 	public static void loadEntities()
 	{
 		LatCore.println("Loading Entities...", LOGGER);
-		entityMap = new FastMap<Integer, Class<? extends Entity>>();
-		entityNameMap = new FastMap<Integer, String>();
-		entityStaticMap = new FastMap<Integer, Entity>();
 		
-		register(1, "rock", EntityRock.class);
+		register(1, "box", EntityBox.class);
 		
-		LatCore.println("Loaded " + entityMap.size() + " entit" + (LatCore.numEnding(entityMap.size()).length() == 0 ? "y" : "ies"), LOGGER);
+		LatCore.println("Loaded " + entityList.size() + " entities", LOGGER);
 	}
 	
 	public static void register(int id, String s, Class<? extends Entity> c)
@@ -37,52 +32,74 @@ public class EntityID
 		
 		String sc = LatCore.classpath(c);
 		
-		if(id < 1 || id > 32767) return "Entity ID " + id + " for '" + sc + "' is < 0 or > 32767!";
-		if(entityMap.keys.contains(id))
-		return "Entity ID " + id + " for '" + LatCore.classpath(c) + "' already registred by '" + LatCore.classpath(entityMap.get(id)) + "'!";
+		if(id < 1 || id > 32767) return "Entity ID " + id + " for '" + sc + "' is < 1 or > 32767!";
+		if(entityList.contains(id))
+		return "Entity ID " + id + " for '" + LatCore.classpath(c) + "' already registred by '" + entityList.get(id).classPath + "'!";
 		
-		if(s != null && entityNameMap.values.contains(s))
-		return "Entity Name '" + s + "' for '" + LatCore.classpath(c) + "' already registred by '" + LatCore.classpath(entityMap.get(id)) + "'!";
+		if(s != null && entityList.contains(s))
+		return "Entity Name '" + s + "' for '" + LatCore.classpath(c) + "' already registred by '" + entityList.get(id).classPath + "'!";
 		
 		try
 		{
-			Constructor<?> cons = c.getConstructor(World.class);
-			Entity e = (Entity)cons.newInstance(fakeWorld);
-			e.toString();
-			entityStaticMap.put(id, e);
+			EntityID eid = new EntityID(id, s, c);
+			eid.createNewEntity(fakeWorld);
+			entityList.add(eid);
+			return null;
 		}
 		catch(Exception e)
 		{
 			return "Constructor '" + c.getSimpleName() + "(World w) { super(w); } ' for '" + sc + "' not found!";
 		}
-		
-		entityMap.put(id, c);
-		if(s != null) entityNameMap.put(id, s);
-		
-		return null;
-	}
-
-	public static Entity createEntity(World w, int eid) throws Exception
-	{
-		Class<? extends Entity> c = entityMap.get(eid);
-		Constructor<?> cons = c.getConstructor(World.class);
-		return (Entity)cons.newInstance(w);
 	}
 	
-	public static int getEID(Class<? extends Entity> c)
-	{
-		if(c == null) return 0;
-		Integer i = entityMap.getKey(c);
-		return (i == null) ? 0 : i.intValue();
-	}
-
-	public static int getEID(Entity entity)
-	{ return (entity == null) ? 0 : getEID(entity.getClass()); }
+	public static EntityID getEID(Object o)
+	{ return entityList.getObj(o); }
 	
-	public static int getEID(String s)
+	// ------------------ //
+	
+	public final int entityID;
+	public final String entityName;
+	public final Class<? extends Entity> entityClass;
+	public final String classPath;
+	
+	public EntityID(int i, String s, Class<? extends Entity> c)
 	{
-		if(s == null) return 0;
-		Integer i = entityNameMap.getKey(s);
-		return (i == null) ? 0 : i.intValue();
+		entityID = i;
+		entityName = s;
+		entityClass = c;
+		classPath = LatCore.classpath(c);
 	}
+	
+	public Entity createNewEntity(World w) throws Exception
+	{ Constructor<?> cons = entityClass.getConstructor(World.class);
+	return (Entity)cons.newInstance(w); }
+	
+	public boolean equals(Object o)
+	{
+		if(o == null) return false;
+		if(o == this) return true;
+		
+		if(o instanceof Integer)
+		return o.equals(entityID);
+		
+		if(o instanceof Entity)
+		return equals(o.getClass());
+		
+		if(o instanceof String)
+		return o.equals(entityName);
+		
+		if(o instanceof Class)
+		return o.equals(entityClass);
+		
+		return false;
+	}
+	
+	public int hashCode()
+	{ return entityID; }
+
+	public int compareTo(EntityID o)
+	{ return Integer.compare(entityID, o.entityID); }
+	
+	public String toString()
+	{ return LatCore.strip(entityID, entityName, classPath); }
 }

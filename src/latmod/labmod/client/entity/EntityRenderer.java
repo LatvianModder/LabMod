@@ -17,7 +17,7 @@ public abstract class EntityRenderer
 	public static void loadEntityRenderers()
 	{
 		register(EntityPlayer.class, new RenderPlayer());
-		register(EntityRock.class, new RenderRock());
+		register(EntityBox.class, new RenderBox());
 	}
 	
 	@SuppressWarnings("all")

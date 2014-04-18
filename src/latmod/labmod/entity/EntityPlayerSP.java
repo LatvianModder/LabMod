@@ -2,7 +2,6 @@ package latmod.labmod.entity;
 import latmod.core.rendering.*;
 import latmod.core.util.*;
 import latmod.labmod.*;
-import latmod.labmod.client.entity.EntityRenderer;
 import latmod.labmod.client.gui.*;
 import latmod.labmod.client.gui.ingame.*;
 import latmod.labmod.cmd.*;
@@ -56,14 +55,7 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 	
 	public void onRender()
 	{
-		//super.onRender();
-		
-		Renderer.push();
-		EntityRenderer r = EntityRenderer.renderMap.get(EntityRock.class);
-		Entity e = new EntityRock(worldObj);
-		e.setPos(cursor);
-		r.renderEntity(e);
-		Renderer.pop();
+		super.onRender();
 	}
 	
 	public void onUpdate(Timer t)
@@ -139,7 +131,7 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 		
 		cursor.update();
 		
-		flags[IN_WALL] = worldObj.getAABBInBox(collisionBox, 0F, 0.01F, 0F) != null;
+		flags[IN_WALL] = worldObj.getAABBInBox(collisionBox, 0F, worldObj.gravity, 0F) != null;
 		
 		if(flags[IN_WALL] || posY < -100F) onAttacked(null, 20);
 		
@@ -168,7 +160,9 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 	
 	public void executeCommand(String s)
 	{
-		if(s == null || s.length() <= 0) return;
+		if(s == null || s.length() == 0) return;
+		if(s.startsWith("/")) s = s.substring(1);
+		if(s.length() == 0) return;
 		
 		int si = s.indexOf(' ');
 		String cmd, argsUnsplit;

@@ -33,7 +33,7 @@ public class Cursor extends Vertex
 			relPos.posZ = dir.posZ * dist;
 			
 			posX = player.posX + relPos.posX;
-			posY = player.posY + relPos.posY;
+			posY = player.posY + player.eyeHeight + relPos.posY;
 			posZ = player.posZ + relPos.posZ;
 			
 			AABB box = player.worldObj.getAABBAtPoint(posX, posY, posZ);

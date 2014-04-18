@@ -20,17 +20,17 @@ public abstract class Entity extends Vertex
 	public float sizeH, sizeV;
 	public AABB collisionBox = null;
 	@Expose public float motX, motY, motZ;
-	public int worldID;
+	public long worldID;
 	@Expose public String displayName = getClass().getSimpleName();
 	
 	public Entity(World w)
 	{ worldObj = w; }
 	
 	public int hashCode()
-	{ return worldID; }
+	{ return (int)worldID; }
 	
 	public String toString()
-	{ return "[ E" + EntityID.getEID(this) + ", W" + worldID + " ]: " + displayName; }
+	{ return "[ E" + EntityID.getEID(this).entityID + ", W" + worldID + " ]: " + displayName; }
 	
 	public boolean equals(Object o)
 	{ return (o == this) || ((o instanceof Entity) ? ((o.hashCode() == hashCode()) ? true : false) : false); }
@@ -160,6 +160,8 @@ public abstract class Entity extends Vertex
 	/** Return true if entity got killed */
 	public boolean onAttacked(Entity entity, float f)
 	{ return false; }
+	
+	public void onRightClick(EntityPlayer ep) { }
 
 	public boolean isGreenDot(EntityPlayerSP ep)
 	{ return true; }

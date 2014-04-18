@@ -34,7 +34,7 @@ public class PlayerInputHandler
 				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 				{
 					int id = ep.debugPage.pageID - 1;
-					if(id < 0) DebugPage.debugPages.size();
+					if(id < 0) id = DebugPage.debugPages.size() - 1;
 					ep.debugPage = DebugPage.debugPages.get(id);
 				}
 				else

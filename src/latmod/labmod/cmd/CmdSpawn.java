@@ -9,13 +9,13 @@ public class CmdSpawn extends Command
 	{
 		if(args == null || args.length <= 0) return "Missing EntityID";
 		
-		int id = EntityID.getEID(args[0]);
+		EntityID eid = EntityID.getEID(args[0]);
 		
-		if(id != 0)
+		if(eid != null)
 		{
 			Vertex pos = ep.cursor;
 			
-			Entity e = EntityID.createEntity(w, id);
+			Entity e = eid.createNewEntity(w);
 			e.setPos(pos.posX, pos.posY, pos.posZ);
 			w.spawnEntity(e);
 			

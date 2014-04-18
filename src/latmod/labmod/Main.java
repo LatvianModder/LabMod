@@ -18,7 +18,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	public static Main inst = null;
 	public Main() { super(defaultWidth, defaultHeight, 60); }
 	public String getTitle() { return "LabMod"; }
-	public static final FastMap<String, String> mainArgs = new FastMap<String, String>();
+	public static FastMap<String, String> mainArgs = null;
 	private static int defaultWidth = 800, defaultHeight = 600;
 	public static FastList<Class<?>> allClasses = new FastList<Class<?>>();
 	private GuiBasic openedGui;
@@ -27,24 +27,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	public static void main(String[] args)
 	{
 		new GameLogger();
-		
-		mainArgs.clear();
-		if(args != null && args.length > 0)
-		for(int i = 0; i < args.length; i++)
-		{
-			String[] s = args[i].split("=");
-			if(s == null || s.length != 2)
-			{
-				mainArgs.put(args[i], null);
-				LatCore.println(args[i]);
-			}
-			else
-			{
-				mainArgs.put(s[0], s[1]);
-				LatCore.println(s[1], s[0]);
-			}
-		}
-		
+		mainArgs = LatCore.createArgs(args);
 		defaultWidth = MathHelper.toInt(getArg("-width", "800"));
 		defaultHeight = MathHelper.toInt(getArg("-height", "600"));
 		

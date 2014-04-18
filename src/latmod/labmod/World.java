@@ -11,12 +11,12 @@ public class World
 	public String serverName = "Loading...";
 	public FastList<AABB> AABBList = new FastList<AABB>();
 	public float width, depth;
-	public int nextEWID = 0;
+	public long nextEWID = 0L;
 	public long tick = 0L;
 	public float gravity = 0.007F;
 	
-	public FastMap<Integer, Entity> entities = new FastMap<Integer, Entity>();
-	public FastMap<Integer, Entity> entitiesToBeAdded = new FastMap<Integer, Entity>();
+	public FastMap<Long, Entity> entities = new FastMap<Long, Entity>();
+	public FastMap<Long, Entity> entitiesToBeAdded = new FastMap<Long, Entity>();
 	public EntityPlayerSP player;
 	public WorldRenderer worldRenderer;
 	public AABB collBoxes[] = new AABB[0];
@@ -61,17 +61,14 @@ public class World
 		entities.putAll(entitiesToBeAdded);
 		entitiesToBeAdded.clear();
 		
-		for(int i = 0; i < entities.size(); i++)
-		entities.get(i).onUpdate(t);
+		for(Entity e : entities) e.onUpdate(t);
 		
-		for(int i = 0; i < entities.size(); i++)
+		for(Entity e : entities)
 		{
-			Entity e = entities.get(i);
-			
 			if(e.flags[Entity.IS_DEAD])
 			{
 				e.onDeath();
-				entities.remove(i);
+				entities.remove(e.worldID);
 			}
 		}
 		
@@ -90,8 +87,8 @@ public class World
 		
 		AABBList.addAll(collBoxes);
 		
-		for(int i = 0; i < entities.size(); i++)
-		entities.get(i).addCollisionBoxes(AABBList);
+		for(Entity e : entities)
+		e.addCollisionBoxes(AABBList);
 		
 		player.addCollisionBoxes(null);
 	}
@@ -108,14 +105,6 @@ public class World
 	public final FastList<AABB> getAllAABBsAtPoint(float x, float y, float z)
 	{ return AABB.getAllAABBsAtPoint(AABBList, x, y, z); }
 	
-	public final Entity getFromWID(int wid)
-	{
-		for(int i = 0; i < entities.size(); i++)
-		{
-			Entity e = entities.get(i);
-			if(e.worldID == wid) return e;
-		}
-		
-		return null;
-	}
+	public final Entity getFromWID(long wid)
+	{ return entities.get(wid); }
 }
