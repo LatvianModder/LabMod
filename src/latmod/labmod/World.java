@@ -84,13 +84,9 @@ public class World
 	public final void resetCollisionBoxes()
 	{
 		AABBList.clear();
-		
 		AABBList.addAll(collBoxes);
-		
 		for(Entity e : entities)
-		e.addCollisionBoxes(AABBList);
-		
-		player.addCollisionBoxes(null);
+		AABBList.add(e.collisionBox);
 	}
 	
 	public final AABB getAABBAtPoint(float x, float y, float z)

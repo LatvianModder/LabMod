@@ -24,7 +24,10 @@ public abstract class Entity extends Vertex
 	@Expose public String displayName = getClass().getSimpleName();
 	
 	public Entity(World w)
-	{ worldObj = w; }
+	{
+		worldObj = w;
+		resetCollisionBox();
+	}
 	
 	public int hashCode()
 	{ return (int)worldID; }
@@ -76,56 +79,57 @@ public abstract class Entity extends Vertex
 	{
 		flags[ON_GROUND] = false;
 		
-		addCollisionBoxes(null);
-		
-		AABB b = worldObj.getAABBInBox(collisionBox, 0F, motY, 0F);
-		if(b != null && !flags[NO_CLIP])
-		{
-			if(motY <= 0F)
-			{
-				posY = b.posY2;
-				flags[ON_GROUND] = true;
-			}
-			
-			motY = 0F;
-		}
-		else motY -= worldObj.gravity;
+		resetCollisionBox();
 		
 		if(!flags[NO_CLIP])
 		{
+			// Y
+			
+			AABB b = worldObj.getAABBInBox(collisionBox, 0F, motY, 0F);
+			if(b != null)
+			{
+				if(motY <= 0F)
+				{
+					posY = b.posY2;
+					flags[ON_GROUND] = true;
+				}
+				
+				motY = 0F;
+			}
+			else motY -= worldObj.gravity;
+			
+			// XZ
+			
 			AABB bx = worldObj.getAABBInBox(collisionBox, motX * 2F, 0.01F, 0F);
 			if(bx != null)
 			{
-				if(motY != 0F || bx.posY2 - collisionBox.posY1 > 0.5F)
-				motX = 0F; else
-				{
-					posY = bx.posY2;
-				}
+				//if(motY != 0F || bx.posY2 - collisionBox.posY1 > 0.5F)
+				motX = 0F;
+				//else posY = bx.posY2;
 			}
 			
 			AABB bz = worldObj.getAABBInBox(collisionBox, 0F, 0.01F, motZ * 2F);
 			if(bz != null)
 			{
-				if(motY != 0F || bz.posY2 - collisionBox.posY1 > 0.5F)
-				motZ = 0F; else
-				{
-					posY = bz.posY2;
-				}
+				//if(motY != 0F || bz.posY2 - collisionBox.posY1 > 0.5F)
+				motZ = 0F;
+				//else posY = bz.posY2;
 			}
 		}
 		
 		posX += motX;
 		posY += motY;
 		posZ += motZ;
+		
+		resetCollisionBox();
 	}
 	
-	public void addCollisionBoxes(FastList<AABB> b)
+	public final void resetCollisionBox()
 	{
 		if(collisionBox != null) collisionBox.set(posX, posY, posZ, sizeH, sizeV, sizeH);
 		else collisionBox = new AABB.BottomCentred(posX, posY, posZ, sizeH, sizeV, sizeH);
 		collisionBox.owner = this;
 		collisionBox.solid = false;
-		if(b != null) b.add(collisionBox);
 	}
 	
 	public void readFromNBT(NBTMap map)
