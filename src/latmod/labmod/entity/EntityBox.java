@@ -13,8 +13,9 @@ public class EntityBox extends Entity
 	
 	public void onUpdate(Timer t)
 	{
-		rotYaw += 3F;
-		
 		moveEntity();
+		
+		posY = 0.01F;
+		motY = 0F;
 	}
 }

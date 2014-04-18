@@ -77,6 +77,16 @@ public class PlayerInputHandler
 	{
 		if(!Main.inst.getGui().allowPlayerInput()) return Cancel.FALSE;
 		
+		if(ep.cursor.lookEntity != null)
+		{
+			if(m.button == 0)
+			{
+				boolean b = ep.cursor.lookEntity.onAttacked(ep, 1F);
+				if(b) ep.cursor.lookEntity.setDead();
+			}
+			else if(m.button == 1) ep.cursor.lookEntity.onRightClick(ep);
+		}
+		
 		return Cancel.TRUE;
 	}
 	

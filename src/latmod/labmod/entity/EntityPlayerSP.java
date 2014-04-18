@@ -20,7 +20,6 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 	{
 		super(w);
 		setPos(w.spawnPoint);
-		username = "LatvianModder";
 		collisionBox = new AABB.BottomCentred(posX, posY, posZ, sizeH, sizeV, sizeH);
 		
 		for(KeyBinding k : GameOptions.keyBindings)
@@ -51,6 +50,19 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 		}
 		
 		Font.inst.alpha = 255;
+		
+		{
+			if(cursor.lookEntity != null && cursor.lookEntity != null && cursor.lookEntity.isGreenDot(this))
+			Renderer.colorize(50, 220, 50); else
+			Renderer.colorize(220, 50, 50);
+			
+			Renderer.disableTexture();
+			Renderer.lineWidth(4F);
+			Renderer.enableSmooth();
+			Renderer.point(Main.inst.width / 2F, Main.inst.height / 2F);
+			Renderer.disableSmooth();
+			Renderer.lineWidth(1F);
+		}
 	}
 	
 	public void onRender()

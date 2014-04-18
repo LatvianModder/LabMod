@@ -19,7 +19,7 @@ public abstract class Entity extends Vertex
 	@Expose public float rotYaw, rotPitch;
 	public float sizeH, sizeV;
 	public AABB collisionBox = null;
-	@Expose public float motX, motY, motZ;
+	@Expose public float motX = 0F, motY = 0F, motZ = 0F;
 	public long worldID;
 	@Expose public String displayName = getClass().getSimpleName();
 	
@@ -75,6 +75,8 @@ public abstract class Entity extends Vertex
 	public void moveEntity()
 	{
 		flags[ON_GROUND] = false;
+		
+		addCollisionBoxes(null);
 		
 		AABB b = worldObj.getAABBInBox(collisionBox, 0F, motY, 0F);
 		if(b != null && !flags[NO_CLIP])
@@ -159,7 +161,7 @@ public abstract class Entity extends Vertex
 	
 	/** Return true if entity got killed */
 	public boolean onAttacked(Entity entity, float f)
-	{ return false; }
+	{ return true; }
 	
 	public void onRightClick(EntityPlayer ep) { }
 

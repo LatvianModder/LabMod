@@ -153,8 +153,8 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		}
 		else if(key == GameOptions.KEY_TEST.key) //TODO: Test key
 		{
-			LatCore.println("-------------------");
-			GameOptions.loadOptions();
+			if(worldObj != null && worldObj.player != null)
+			worldObj.player.executeCommand("spawn box");
 		}
 		
 		return Cancel.FALSE;

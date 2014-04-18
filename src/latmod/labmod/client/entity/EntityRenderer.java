@@ -16,7 +16,6 @@ public abstract class EntityRenderer
 	
 	public static void loadEntityRenderers()
 	{
-		register(EntityPlayer.class, new RenderPlayer());
 		register(EntityBox.class, new RenderBox());
 	}
 	

@@ -35,18 +35,6 @@ public class DPIngame extends DebugPage
 		Renderer.disableTexture();
 		
 		{
-			if(ep.cursor.lookEntity != null && ep.cursor.lookEntity != null && ep.cursor.lookEntity.isGreenDot(ep))
-			Renderer.colorize(50, 220, 50); else
-			Renderer.colorize(220, 50, 50);
-			
-			Renderer.lineWidth(4F);
-			Renderer.enableSmooth();
-			Renderer.point(Main.inst.width / 2F, Main.inst.height / 2F);
-			Renderer.disableSmooth();
-			Renderer.lineWidth(1F);
-		}
-		
-		{
 			int bw = 50;
 			int bh = 90;
 			
