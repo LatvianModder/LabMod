@@ -8,6 +8,9 @@ import latmod.labmod.cmd.*;
 
 public class EntityPlayerSP extends EntityPlayer // Entity
 {
+	public static final Color DOT_GREEN = Color.get(50, 220, 50);
+	public static final Color DOT_RED = Color.get(220, 50, 50);
+	
 	public float moveSpeed = 0.05F;
 	public FastMap<KeyBinding, Long> lastKeyPressedMillis = new FastMap<KeyBinding, Long>();
 	private float runFovDelta = 0F;
@@ -53,8 +56,7 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 		
 		{
 			if(cursor.lookEntity != null && cursor.lookEntity != null && cursor.lookEntity.isGreenDot(this))
-			Renderer.colorize(50, 220, 50); else
-			Renderer.colorize(220, 50, 50);
+			DOT_GREEN.set(); else DOT_RED.set();
 			
 			Renderer.disableTexture();
 			Renderer.lineWidth(4F);

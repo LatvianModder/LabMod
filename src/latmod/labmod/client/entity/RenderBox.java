@@ -14,7 +14,7 @@ public class RenderBox extends EntityRenderer
 	
 	public void renderEntity(Entity e)
 	{
-		Renderer.recolor();
+		Color.clear();
 		Renderer.push();
 		Renderer.translate(e, 1F);
 		Renderer.rotate(e.rotYaw, e.rotPitch);

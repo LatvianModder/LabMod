@@ -38,12 +38,12 @@ public class DPIngame extends DebugPage
 			int bw = 50;
 			int bh = 90;
 			
-			Renderer.colorize(0xFF00FF00, 75);
+			Color.GREEN.set(75);
 			Renderer.rect(Main.inst.width - bw - 8, Main.inst.height - bh - 8, bw, bh);
 		}
 		
 		if(ep.hurtTimer > 0) Renderer.drawCircle(Main.inst.width / 2F, Main.inst.height / 2F,
-		Main.inst.width * 1.5F, 0x00FFFFFF, Renderer.getColor(0xFF0000, (int)(ep.hurtTimer * 25F)));
+		Main.inst.width * 1.5F, Color.NONE, Color.RED.clone((int)(ep.hurtTimer * 25F)));
 		
 		Renderer.enableTexture();
 	}

@@ -112,20 +112,25 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	{
 		if(updateTimer == null) return;
 		
-		Renderer.background(20);
+		Renderer.background(Color.DARK_GRAY);
 		
-		if(worldObj != null && worldObj.worldRenderer != null)
+		try
 		{
-			worldObj.worldRenderer.preRender();
-			Renderer.enter3D();
-			Renderer.recolor();
-			worldObj.worldRenderer.onRender();
-			worldObj.worldRenderer.postRender();
+			if(worldObj != null && worldObj.worldRenderer != null)
+			{
+				worldObj.worldRenderer.preRender();
+				Renderer.enter3D();
+				Color.clear();
+				worldObj.worldRenderer.onRender();
+				worldObj.worldRenderer.postRender();
+			}
 		}
+		catch(Exception e)
+		{  }
 		
 		// Render 2D Stuff //
 		Renderer.enter2D();
-		Renderer.recolor();
+		Color.clear();
 		
 		if(worldObj != null && worldObj.player != null) worldObj.player.renderGui();
 		openedGui.onRender();

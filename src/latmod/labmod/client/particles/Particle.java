@@ -5,7 +5,7 @@ import latmod.labmod.entity.*;
 
 public class Particle extends Entity
 {
-	public int color = 0xFFFF0000;
+	public Color color = Color.WHITE;
 	public int tick = 0, maxTick = 0;
 	
 	public Particle(World w, float x, float y, float z, double mx, double my, double mz)
@@ -31,7 +31,7 @@ public class Particle extends Entity
 	
 	public void onRender()
 	{
-		Renderer.colorize(color);
+		color.set();
 		Renderer.push();
 		Renderer.translate(this, 1F);
 		Renderer.rotate(Renderer3D.camYaw, Renderer3D.camPitch);

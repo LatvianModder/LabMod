@@ -25,7 +25,7 @@ public abstract class GuiBasic extends Gui
 	public void addButton(int id, float x, float y, float w, float h, String s)
 	{
 		Button b = new Button(this, x, y, w, h, s);
-		if(Main.inst.worldObj != null) b.setColor(0xFFC1C1C1);
+		if(Main.inst.worldObj != null) b.setColor(Color.get(0xFFC1C1C1));
 		addWidget(id, b);
 	}
 	
@@ -47,7 +47,7 @@ public abstract class GuiBasic extends Gui
 			{
 				renderStars();
 				Renderer.disableTexture();
-				Renderer.colorize(0, 200);
+				Color.BLACK.set(200);
 				Renderer.rect(0, 0, width, height);
 				Renderer.enableTexture();
 			}
@@ -55,7 +55,7 @@ public abstract class GuiBasic extends Gui
 		else
 		{
 			Renderer.disableTexture();
-			Renderer.colorize(0, 50);
+			Color.BLACK.set(50);
 			Renderer.rect(0, 0, width, height);
 			Renderer.enableTexture();
 		}
@@ -87,12 +87,12 @@ public abstract class GuiBasic extends Gui
 		Renderer.loadTexturesSmooth = true;
 		Renderer.setTexture("gui/star.png");
 		Renderer.loadTexturesSmooth = false;
-		Renderer.colorize(255, 75);
+		Color.WHITE.set(75);
 		
 		for(int i = 0; i < stars.length; i++)
 		if(stars[i] != null) stars[i].render();
 		
-		Renderer.recolor();
+		Color.clear();
 	}
 	
 	public static final class Star

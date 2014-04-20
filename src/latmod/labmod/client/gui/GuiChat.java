@@ -1,5 +1,6 @@
 package latmod.labmod.client.gui;
 import org.lwjgl.input.*;
+
 import latmod.core.gui.*;
 import latmod.core.input.*;
 import latmod.core.rendering.*;
@@ -17,10 +18,10 @@ public class GuiChat extends GuiBasic implements IKeyListener.Pressed
 	public void onRender()
 	{
 		Renderer.disableTexture();
-		Renderer.colorize(0, 100);
+		Color.BLACK.clone(100).set();
 		Renderer.rect(0, height - 24, width, 24);
 		Renderer.enableTexture();
-		Renderer.recolor();
+		Color.clear();
 		
 		String txt = text;
 		if(Time.millis() % 1000 > 500) txt += '_';

@@ -15,7 +15,7 @@ public class WorldRenderer
 	
 	public int renderedEntities = 0;
 	public int renderedParticles = 0;
-	public int skyColor = 0xFF0F0F0F;
+	public Color skyColor = Color.get(0xFF0F0F0F);
 	
 	public OBJModel skybox;
 	public Texture skyboxTex;
@@ -54,6 +54,8 @@ public class WorldRenderer
 		
 		if(worldObj.player != null)
 		{
+			Renderer3D.disableFog();
+			
 			//Renderer.colorize(skyColor);
 			
 			Renderer3D.disableDepth();
@@ -69,10 +71,13 @@ public class WorldRenderer
 			Renderer3D.enableDepth();
 		}
 		
+		//Renderer3D.enableFog();
+		//Renderer3D.drawFog(10F, 30F, Color.WHITE);
+		
 		{
-			Renderer.recolor();
+			Color.clear();
 			Renderer.setTexture("world/grass.png");
-			Renderer.plane(0F, -1F, 0F, worldObj.width, worldObj.depth, 0F, 0F, worldObj.width, worldObj.depth);
+			Renderer.plane(0F, 0F, 0F, worldObj.width, worldObj.depth, 0F, 0F, worldObj.width, worldObj.depth);
 		}
 		
 		Renderer3D.enableCulling();
@@ -105,5 +110,7 @@ public class WorldRenderer
 		{ p.onRender(); renderedParticles++; }
 		
 		worldObj.player.onRender();
+		
+		Renderer3D.disableFog();
 	}
 }

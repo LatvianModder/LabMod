@@ -65,7 +65,7 @@ public class ClientUtils
 		{
 			Renderer.disableTexture();
 			Renderer.enableSmooth();
-			Renderer.colorize(255, 200);
+			Color.WHITE.set(200);
 			float d = 32F;
 			float d1 = d / 2F + 4F;
 			float r = Main.inst.renderTick * 0.61F;
