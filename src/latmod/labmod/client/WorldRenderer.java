@@ -17,8 +17,16 @@ public class WorldRenderer
 	public int renderedParticles = 0;
 	public Color skyColor = Color.get(0xFF0F0F0F);
 	
-	public OBJModel skybox;
-	public Texture skyboxTex;
+	public static OBJModel skybox;
+	public static Texture skyboxTex;
+	
+	public static void loadTextures()
+	{
+		skybox = ClientUtils.inst.loadModel("/models/skybox.obj");
+		Renderer.loadTexturesSmooth = true;
+		skyboxTex = Renderer.getTexture("world/skybox.jpg");
+		Renderer.loadTexturesSmooth = false;
+	}
 	
 	public WorldRenderer(World w)
 	{
@@ -30,15 +38,7 @@ public class WorldRenderer
 	
 	public void preRender()
 	{
-		Renderer3D.getRenderDistance = 1000F;
-		
-		if(skybox == null)
-		{
-			skybox = ClientUtils.inst.loadModel("/models/skybox.obj");
-			Renderer.loadTexturesSmooth = true;
-			skyboxTex = Renderer.getTexture("world/skybox.jpg");
-			Renderer.loadTexturesSmooth = false;
-		}
+		Renderer3D.getRenderDistance = 300F;
 	}
 	
 	public void postRender()

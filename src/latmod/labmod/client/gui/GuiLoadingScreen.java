@@ -1,8 +1,6 @@
 package latmod.labmod.client.gui;
 import latmod.core.gui.Widget;
-import latmod.core.rendering.Color;
-import latmod.core.rendering.Font;
-import latmod.core.rendering.Renderer;
+import latmod.core.rendering.*;
 import latmod.labmod.Main;
 
 public class GuiLoadingScreen extends GuiBasic
@@ -21,7 +19,7 @@ public class GuiLoadingScreen extends GuiBasic
 		
 		Renderer.enableTexture();
 		Renderer.loadTexturesSmooth = true;
-		Renderer.setTexture("gui/loadingScreen.png");
+		Renderer.setTexture("gui/logo.png");
 		Renderer.loadTexturesSmooth = false;
 		Color.clear();
 		float s = height / 2F;

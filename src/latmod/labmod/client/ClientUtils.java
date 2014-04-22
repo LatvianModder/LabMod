@@ -26,6 +26,7 @@ public class ClientUtils
 		
 		for(EntityRenderer r : EntityRenderer.renderMap) r.loadTextures();
 		for(DebugPage p : DebugPage.debugPages) p.loadTextures();
+		WorldRenderer.loadTextures();
 	}
 	
 	public OBJModel loadModel(String s)
