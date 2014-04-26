@@ -58,8 +58,11 @@ public class World
 	{
 		resetCollisionBoxes();
 		
-		entities.putAll(entitiesToBeAdded);
-		entitiesToBeAdded.clear();
+		if(!entitiesToBeAdded.isEmpty())
+		{
+			entities.putAll(entitiesToBeAdded);
+			entitiesToBeAdded.clear();
+		}
 		
 		for(Entity e : entities) e.onUpdate(t);
 		

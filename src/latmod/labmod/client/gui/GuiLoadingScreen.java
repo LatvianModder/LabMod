@@ -19,7 +19,7 @@ public class GuiLoadingScreen extends GuiBasic
 		
 		Renderer.enableTexture();
 		Renderer.loadTexturesSmooth = true;
-		Renderer.setTexture("gui/logo.png");
+		Renderer.setTexture("gui/logo_1024.png");
 		Renderer.loadTexturesSmooth = false;
 		Color.clear();
 		float s = height / 2F;

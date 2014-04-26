@@ -18,7 +18,7 @@ public class GuiChat extends GuiBasic implements IKeyListener.Pressed
 	public void onRender()
 	{
 		Renderer.disableTexture();
-		Color.BLACK.clone(100).set();
+		Color.BLACK.set(100);
 		Renderer.rect(0, height - 24, width, 24);
 		Renderer.enableTexture();
 		Color.clear();

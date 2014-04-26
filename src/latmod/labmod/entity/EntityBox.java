@@ -20,7 +20,8 @@ public class EntityBox extends Entity
 		//motY = 0F;
 		
 		if(posY > 150) setDead();
-		
+
+		if(motX != 0F || motY != 0F || motZ != 0F)
 		GuiIngame.printChat("Mot: " + LatCore.strip(motX, motY, motZ));
 	}
 }

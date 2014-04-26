@@ -24,7 +24,7 @@ public class WorldRenderer
 	{
 		skybox = ClientUtils.inst.loadModel("/models/skybox.obj");
 		Renderer.loadTexturesSmooth = true;
-		skyboxTex = Renderer.getTexture("world/skybox.jpg");
+		skyboxTex = Renderer.getTexture("world/skybox.png");
 		Renderer.loadTexturesSmooth = false;
 	}
 	

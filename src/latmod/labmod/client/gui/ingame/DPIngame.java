@@ -43,7 +43,7 @@ public class DPIngame extends DebugPage
 		}
 		
 		if(ep.hurtTimer > 0) Renderer.drawCircle(Main.inst.width / 2F, Main.inst.height / 2F,
-		Main.inst.width * 1.5F, Color.NONE, Color.RED.clone((int)(ep.hurtTimer * 25F)));
+		Main.inst.width * 1.5F, Color.NONE, Color.RED.cloneCol((int)(ep.hurtTimer * 25F)));
 		
 		Renderer.enableTexture();
 	}

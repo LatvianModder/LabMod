@@ -69,7 +69,7 @@ public abstract class Entity extends Vertex
 	
 	public void moveTowards(float x, float z, float s)
 	{
-		if(x == 0F && z == 0F) return;
+		if((x == 0F && z == 0F) || s == 0F) return;
 		float f = MathHelper.sqrt2(x, z);
 		motX += x / f * s;
 		motZ += z / f * s;
