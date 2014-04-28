@@ -27,7 +27,7 @@ public class GuiIngame extends GuiBasic implements IKeyListener.Pressed, IKeyLis
 		al.addAll(visibleChat);
 		visibleChat = al;
 		
-		LatCore.println(s, "Chat");
+		Main.gameLogger.info("[Chat]: " + s);
 	}
 	
 	public GuiIngame()

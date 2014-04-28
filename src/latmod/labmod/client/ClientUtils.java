@@ -34,13 +34,13 @@ public class ClientUtils
 		try
 		{
 			OBJModel m = OBJModel.load(ClientUtils.class.getResourceAsStream(s));
-			LatCore.println("Loaded model '" + s + "' with " + m.groups.size() + " groups & " + m.totalFaces.size() + " faces", "ClientUtils");
+			Renderer.logger.info("Loaded model '" + s + "' with " + m.groups.size() + " groups & " + m.totalFaces.size() + " faces");
 			//for(int i = 0; i < m.groupNames.length; i++)
 			//LatCore.println("[" + i + "]\t" + m.groupNames[i], "ClientUtils");
 			return m;
 		}
 		catch(Exception e)
-		{ LatCore.printlnErr("Failed to load model '" + s + "'!", "ClientUtils"); }
+		{ Renderer.logger.warning("Failed to load model '" + s + "'!"); }
 		
 		return null;
 	}
@@ -108,7 +108,7 @@ public class ClientUtils
 			}
 			
 			reloadTextures = false;
-			LatCore.println("Reloaded " + trl + " textures", "ClientUtils");
+			Renderer.logger.info("Reloaded " + trl + " textures");
 		}
 	}
 }

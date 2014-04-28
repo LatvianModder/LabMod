@@ -21,7 +21,7 @@ public class GameOptions
 	public static KeyBinding KEY_CAMERA = new KeyBinding("player.camera", Keyboard.KEY_F5);
 	public static KeyBinding KEY_HIDE_GUI = new KeyBinding("player.hideGui", Keyboard.KEY_F1);
 	public static KeyBinding KEY_DEBUG = new KeyBinding("player.debug", Keyboard.KEY_F3);
-	public static KeyBinding KEY_TEST = new KeyBinding("player.test", Keyboard.KEY_F6);
+	public static KeyBinding KEY_TEST = new KeyBinding("player.test", Keyboard.KEY_B);
 	
 	public static KeyBinding KEY_MOVE_FORWARD = new KeyBinding("player.move.forward", Keyboard.KEY_W);
 	public static KeyBinding KEY_MOVE_BACKWARD = new KeyBinding("player.move.backward", Keyboard.KEY_S);

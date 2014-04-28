@@ -90,7 +90,7 @@ public abstract class Entity extends Vertex
 			{
 				if(motY <= 0F)
 				{
-					posY = b.posY2;
+					posY = b.maxY;
 					flags[ON_GROUND] = true;
 				}
 				

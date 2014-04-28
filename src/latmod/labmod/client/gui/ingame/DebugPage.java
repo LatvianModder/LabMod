@@ -1,5 +1,6 @@
 package latmod.labmod.client.gui.ingame;
 import latmod.core.util.*;
+import latmod.labmod.Main;
 import latmod.labmod.World;
 import latmod.labmod.entity.*;
 
@@ -17,7 +18,7 @@ public abstract class DebugPage
 		add(new DPWorld());
 		add(new DPThreads());
 		
-		LatCore.println("Loaded " + debugPages.size() + " debug pages!", "DebugPages");
+		Main.gameLogger.info("Loaded " + debugPages.size() + " debug pages!");
 	}
 	
 	public static void add(DebugPage p)

@@ -8,7 +8,6 @@ import latmod.labmod.entity.EntityPlayer;
 public abstract class Command
 {
 	public static FastMap<String, Command> commands = new FastMap<String, Command>();
-	private static final String LOGGER = "CommandLoader";
 	
 	public static final TextColor FINE = TextColor.WHITE;
 	public static final TextColor ERR = TextColor.RED;
@@ -21,7 +20,7 @@ public abstract class Command
 	
 	public static void loadCommands()
 	{
-		LatCore.println("Loading Commands...", LOGGER);
+		Main.gameLogger.info("Loading Commands...");
 		
 		register("tps", new CmdTPS());
 		register("hurt", new CmdHP());
@@ -29,13 +28,13 @@ public abstract class Command
 		register("tp", new CmdTP());
 		register("gravity", new CmdGravity());
 		
-		LatCore.println("Loaded " + commands.size() + " command" + LatCore.numEnding(commands.size()), LOGGER);
+		Main.gameLogger.info("Loaded " + commands.size() + " command" + LatCore.numEnding(commands.size()));
 	}
 	
 	public static void register(String s, Command c)
 	{
 		if(commands.keys.contains(s))
-		LatCore.printlnErr("Overriding " + LatCore.classpath(commands.get(s).getClass()) + " with " + LatCore.classpath(c.getClass()), s, LOGGER);
+		Main.gameLogger.info("Overriding " + LatCore.classpath(commands.get(s).getClass()) + " with " + LatCore.classpath(c.getClass()));
 		commands.put(s, c);
 	}
 	

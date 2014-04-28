@@ -1,7 +1,6 @@
 package latmod.labmod.entity;
 import latmod.core.util.*;
 import latmod.labmod.*;
-import latmod.labmod.client.gui.GuiIngame;
 
 public class EntityBox extends Entity
 {
@@ -15,13 +14,6 @@ public class EntityBox extends Entity
 	public void onUpdate(Timer t)
 	{
 		moveEntity();
-		
-		//posY = 0.01F;
-		//motY = 0F;
-		
 		if(posY > 150) setDead();
-
-		if(motX != 0F || motY != 0F || motZ != 0F)
-		GuiIngame.printChat("Mot: " + LatCore.strip(motX, motY, motZ));
 	}
 }

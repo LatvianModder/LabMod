@@ -1,5 +1,6 @@
 package latmod.labmod.entity;
 import java.lang.reflect.*;
+
 import latmod.core.util.*;
 import latmod.labmod.*;
 
@@ -9,21 +10,19 @@ public class EntityID implements Comparable<EntityID>
 	
 	public static final FastList<EntityID> entityList = new FastList<EntityID>();
 	
-	private static final String LOGGER = "EntityID";
-	
 	public static void loadEntities()
 	{
-		LatCore.println("Loading Entities...", LOGGER);
+		Main.gameLogger.info("Loading Entities...");
 		
 		register(1, "box", EntityBox.class);
 		
-		LatCore.println("Loaded " + entityList.size() + " entities", LOGGER);
+		Main.gameLogger.info("Loaded " + entityList.size() + " entities");
 	}
 	
 	public static void register(int id, String s, Class<? extends Entity> c)
 	{
 		String s1 = register0(id, s, c);
-		if(s1 != null) LatCore.printlnErr("Failed to register: " + s1, LOGGER);
+		if(s1 != null) Main.gameLogger.warning("Failed to register: " + s1);
 	}
 	
 	private static String register0(int id, String s, Class<? extends Entity> c)

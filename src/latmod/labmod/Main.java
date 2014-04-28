@@ -1,5 +1,6 @@
 package latmod.labmod;
 import java.nio.ByteBuffer;
+import java.util.logging.Logger;
 
 import org.lwjgl.input.*;
 import org.lwjgl.opengl.Display;
@@ -27,9 +28,14 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	private GuiBasic openedGui;
 	public World worldObj = null;
 	
+	public static final Logger gameLogger = Logger.getLogger("Game");
+	static { gameLogger.setParent(LatCore.logger); }
+	
 	public static void main(String[] args)
 	{
+		LatCore.initLogger();
 		new GameLogger();
+		
 		mainArgs = LatCore.createArgs(args);
 		defaultWidth = MathHelper.toInt(getArg("-width", "800"));
 		defaultHeight = MathHelper.toInt(getArg("-height", "600"));
@@ -48,7 +54,6 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		
 		Renderer.loadTexturesSmooth = true;
 		Font.inst = new Font(Renderer.getTexture("gui/fontLabMod.png"));
-		//Font.inst.preScale = 1.35F;
 		Font.inst.shadowEnabled = false;
 		Renderer.loadTexturesSmooth = false;
 		
@@ -69,7 +74,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		
 		//if(mainArgs.keys.contains("-fs") || mainArgs.keys.contains("-fullscreen"))
 		//setFullscreen(true);
-		//Renderer
+		
 		Event.DEFAULT.addListener(this);
 		
 		ClientUtils.inst = new ClientUtils();
@@ -89,22 +94,22 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	public static void loadServer()
 	{
 		long l = Time.millis();
-		LatCore.println("Loading server...", "Main", "Server");
-		LatCore.println("Loading all classes from: " + LatCore.getSourceDirectory(Main.class).getPath(), "Main", "Server");
+		gameLogger.info("Loading server...");
+		gameLogger.info("Loading all classes from: " + LatCore.getSourceDirectory(Main.class).getPath());
 		LatCore.getAllClassesInDir(Main.class, allClasses);
-		LatCore.println("Totally found " + allClasses.size() + " classes for loaders", "Main", "Server");
+		gameLogger.info("Totally found " + allClasses.size() + " classes for loaders");
 		
 		GameOptions.loadOptions();
 		EntityID.loadEntities();
 		Command.loadCommands();
 		
-		LatCore.println("Done loading server in " + Time.since(l) + " seconds", "Main", "Server");
+		gameLogger.info("Done loading server in " + Time.since(l) + " seconds");
 	}
 	
 	public static void loadClient()
 	{
 		long l = Time.millis();
-		LatCore.println("Loading client...", "Main", "Client");
+		gameLogger.info("Loading client...");
 		
 		if(mainArgs.keys.contains("-mute")) SoundManager.setMuted(true);
 		
@@ -114,7 +119,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		
 		ClientUtils.inst.loadTextures();
 		
-		LatCore.println("Done loading client in " + Time.since(l) + " seconds", "Main", "Client");
+		gameLogger.info("Done loading client in " + Time.since(l) + " seconds");
 	}
 	
 	public boolean doStartThread()
@@ -180,7 +185,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 			//setFullscreen(!Display.isFullscreen());
 			return Cancel.TRUE;
 		}
-		else if(key == GameOptions.KEY_TEST.key) //TODO: Test key
+		else if(key == GameOptions.KEY_TEST.key)
 		{
 			if(worldObj != null && worldObj.player != null)
 			worldObj.player.executeCommand("spawn box");
