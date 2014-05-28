@@ -42,8 +42,8 @@ public class DPIngame extends DebugPage
 			Renderer.rect(Main.inst.width - bw - 8, Main.inst.height - bh - 8, bw, bh);
 		}
 		
-		if(ep.hurtTimer > 0) Renderer.drawCircle(Main.inst.width / 2F, Main.inst.height / 2F,
-		Main.inst.width * 1.5F, Color.NONE, Color.RED.cloneCol((int)(ep.hurtTimer * 25F)));
+		if(ep.hurtTimer > 0) Renderer.drawPoly(Main.inst.width / 2F, Main.inst.height / 2F,
+		Main.inst.width * 1.5F, 100, Color.NONE, Color.RED.cloneCol((int)(ep.hurtTimer * 25F)));
 		
 		Renderer.enableTexture();
 	}

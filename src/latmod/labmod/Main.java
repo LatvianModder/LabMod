@@ -34,7 +34,11 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	public static void main(String[] args)
 	{
 		LatCore.initLogger();
-		new GameLogger();
+		new GameLogger()
+		{
+			public int getLogCount()
+			{ return GameOptions.props.logCount; }
+		};
 		
 		mainArgs = LatCore.createArgs(args);
 		defaultWidth = MathHelper.toInt(getArg("-width", "800"));
