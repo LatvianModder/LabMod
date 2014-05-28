@@ -13,7 +13,7 @@ public class CmdHP extends Command
 			
 			if(hp >= 0 && hp <= ep.maxHealth)
 			{
-				ep.health = hp;
+				ep.health = (short)hp;
 			}
 		}
 		

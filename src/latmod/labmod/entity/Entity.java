@@ -13,14 +13,15 @@ public abstract class Entity extends Vertex
 	public static final int NO_CLIP = 2;
 	public static final int ON_GROUND = 3;
 	public static final int BOOST = 4;
+	public static final int SNEAKING = 5;
 	
 	public World worldObj;
-	public boolean[] flags = new boolean[8];
-	@Expose public float rotYaw, rotPitch;
-	public float sizeH, sizeV;
-	public AABB collisionBox = null;
-	@Expose public float motX = 0F, motY = 0F, motZ = 0F;
 	public long worldID;
+	public boolean[] flags = new boolean[8];
+	public double sizeH, sizeV;
+	public AABB collisionBox = null;
+	@Expose public double rotYaw = 0D, rotPitch = 0D;
+	@Expose public double motX = 0D, motY = 0D, motZ = 0D;
 	@Expose public String displayName = getClass().getSimpleName();
 	
 	public Entity(World w)
@@ -38,7 +39,7 @@ public abstract class Entity extends Vertex
 	public boolean equals(Object o)
 	{ return (o == this) || ((o instanceof Entity) ? ((o.hashCode() == hashCode()) ? true : false) : false); }
 	
-	public void setSize(float h, float v)
+	public void setSize(double h, double v)
 	{ sizeH = h; sizeV = v; }
 	
 	public void onUpdate(Timer t)
@@ -61,16 +62,16 @@ public abstract class Entity extends Vertex
 	
 	public void onDeath() { }
 	
-	public void setMotion(float x, float y, float z)
+	public void setMotion(double x, double y, double z)
 	{ motX = x;  posY = y; posZ = z; }
 	
-	public void addMotion(float x, float y, float z)
+	public void addMotion(double x, double y, double z)
 	{ motX += x;  posY += y; posZ += z; }
 	
-	public void moveTowards(float x, float z, float s)
+	public void moveTowards(double x, double z, double s)
 	{
-		if((x == 0F && z == 0F) || s == 0F) return;
-		float f = MathHelper.sqrt2(x, z);
+		if((x == 0D && z == 0D) || s == 0D) return;
+		double f = MathHelper.sqrt2sq(x, z);
 		motX += x / f * s;
 		motZ += z / f * s;
 	}
@@ -90,7 +91,7 @@ public abstract class Entity extends Vertex
 			{
 				if(motY <= 0F)
 				{
-					posY = b.maxY;
+					posY = b.max.posY;
 					flags[ON_GROUND] = true;
 				}
 				
@@ -136,31 +137,31 @@ public abstract class Entity extends Vertex
 	{
 		flags = MathHelper.toBool(map.getByte("Flags"));
 		
-		Iterator<Float> floats = map.getList("PosRot").getIterator();
-		posX = floats.next();
-		posY = floats.next();
-		posZ = floats.next();
-		rotYaw = floats.next();
-		rotPitch = floats.next();
-		motX = floats.next();
-		motY = floats.next();
-		motZ = floats.next();
+		Iterator<Double> doubles = map.getList("PosRot").getIterator();
+		posX = doubles.next();
+		posY = doubles.next();
+		posZ = doubles.next();
+		rotYaw = doubles.next();
+		rotPitch = doubles.next();
+		motX = doubles.next();
+		motY = doubles.next();
+		motZ = doubles.next();
 	}
 	
 	public void writeToNBT(NBTMap map)
 	{
 		map.setByte("Flags", MathHelper.toInt(flags));
 		
-		NBTList floats = new NBTList("PosRot");
-		floats.addObj(posX);
-		floats.addObj(posY);
-		floats.addObj(posZ);
-		floats.addObj(rotYaw);
-		floats.addObj(rotPitch);
-		floats.addObj(motX);
-		floats.addObj(motY);
-		floats.addObj(motZ);
-		map.setList(floats);
+		NBTList doubles = new NBTList("PosRot");
+		doubles.addObj(posX);
+		doubles.addObj(posY);
+		doubles.addObj(posZ);
+		doubles.addObj(rotYaw);
+		doubles.addObj(rotPitch);
+		doubles.addObj(motX);
+		doubles.addObj(motY);
+		doubles.addObj(motZ);
+		map.setList(doubles);
 	}
 	
 	/** Return true if entity got killed */

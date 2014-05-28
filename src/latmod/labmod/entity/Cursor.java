@@ -6,11 +6,11 @@ import latmod.core.util.*;
 public class Cursor extends Vertex
 {
 	public EntityPlayer player = null;
-	public float dist = 0F;
-	public float maxDist = 3F;
+	public double dist = 0F;
+	public double maxDist = 3F;
 	public AABB aabbHit = null;
 	public Entity lookEntity = null;
-	public Vertex relPos = new Vertex(0F, 0F, 0F);
+	public Vertex relPos = new Vertex();
 	public RenderSide side = RenderSide.NONE;
 	
 	public Cursor(EntityPlayer e)
@@ -18,14 +18,14 @@ public class Cursor extends Vertex
 	
 	public void update()
 	{
-		float step = 1F / 150F;
+		double step = 1D / 150D;
 		aabbHit = null;
 		side = RenderSide.NONE;
 		lookEntity = null;
 		
 		Vertex dir = MathHelper.getLook(player.rotYaw, player.rotPitch);
 		
-		for(float d = 0F; d < 1F; d += step)
+		for(double d = 0F; d < 1D; d += step)
 		{
 			dist = d * maxDist;
 			relPos.posX = dir.posX * dist;
@@ -46,13 +46,13 @@ public class Cursor extends Vertex
 		}
 	}
 	
-	public Vertex getShakenRel(Random r, float degShake)
+	public Vertex getShakenRel(Random r, double degShake)
 	{ return getShakenRel(r, degShake, dist); }
 	
-	public Vertex getShakenRel(Random r, float degShake, float dist)
+	public Vertex getShakenRel(Random r, double degShake, double dist)
 	{
-		float dYaw = r.nextFloat() * degShake - degShake / 2F;
-		float dPitch= r.nextFloat() * degShake - degShake / 2F;
+		double dYaw = r.nextFloat() * degShake - degShake / 2D;
+		double dPitch= r.nextFloat() * degShake - degShake / 2D;
 		Vertex dir = MathHelper.getLook(player.rotYaw + dYaw, player.rotPitch + dPitch);
 		return new Vertex(dir.posX * dist, dir.posY * dist, dir.posZ * dist);
 	}

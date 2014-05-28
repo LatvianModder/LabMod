@@ -10,8 +10,8 @@ public class DPPlayer extends DebugPage
 	
 	public void addInfo(World w, EntityPlayerSP ep, FastList<String> al)
 	{
-		al.add("Position: " + LatCore.stripFloat(ep.posX, ep.posY, ep.posZ));
-		al.add("Rotation: " + LatCore.stripFloat(ep.rotYaw, ep.rotPitch));
+		al.add("Position: " + LatCore.stripDouble(ep.posX, ep.posY, ep.posZ));
+		al.add("Rotation: " + LatCore.stripDouble(ep.rotYaw, ep.rotPitch));
 		al.add("Running: " + (ep.isRunning ? 1 : 0));
 		al.add("Cursor: " + ep.cursor.lookEntity);
 		al.add("Side hit: " + ep.cursor.side);

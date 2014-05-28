@@ -28,7 +28,7 @@ public class GuiStart extends GuiBasic
 		
 		Renderer.enableTexture();
 		String txt = "LabMod";
-		float s = MathHelper.renderSin(0.03F, 3F, 3.5F);
+		double s = MathHelper.renderSin(0.03D, 0D, 3D, 3.5D);
 		
 		Font.inst.alpha = 200;
 		Font.inst.drawText((width - Font.inst.textWidth(txt, s)) / 2F, 50F, txt, s);

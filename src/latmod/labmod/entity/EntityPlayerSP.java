@@ -1,4 +1,5 @@
 package latmod.labmod.entity;
+import org.lwjgl.input.Mouse;
 import latmod.core.rendering.*;
 import latmod.core.util.*;
 import latmod.labmod.*;
@@ -11,10 +12,10 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 	public static final Color DOT_GREEN = Color.get(50, 220, 50);
 	public static final Color DOT_RED = Color.get(220, 50, 50);
 	
-	public float moveSpeed = 0.05F;
+	public double moveSpeed = 0.05D;
 	public FastMap<KeyBinding, Long> lastKeyPressedMillis = new FastMap<KeyBinding, Long>();
-	private float runFovDelta = 0F;
-	private float zoomFovDelta = 0F;
+	private double runFovDelta = 0D;
+	private double zoomFovDelta = 0D;
 	public boolean renderGui = true;
 	public DebugPage debugPage = null;
 	public boolean isZooming = false;
@@ -79,40 +80,40 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 		
 		boolean canMove = Main.inst.getGui().allowPlayerInput();
 		
-		float tarX = MathHelper.sinFromDeg(rotYaw);
-		float tarZ = MathHelper.cosFromDeg(rotYaw);
+		double tarX = MathHelper.sinFromDeg(rotYaw);
+		double tarZ = MathHelper.cosFromDeg(rotYaw);
 		
-		float speed = moveSpeed;
+		double speed = moveSpeed;
 		if(!canMove || !GameOptions.KEY_MOVE_FORWARD.isPressed()) isRunning = false;
-		if(isRunning) speed *= 2.1F;
+		if(isRunning) speed *= 2.1D;
 		
 		if(canMove)
 		{
 			if(GameOptions.KEY_MOVE_FORWARD.isPressed())
 			{
-				float x = tarX;
-				float z = tarZ;
+				double x = tarX;
+				double z = tarZ;
 				moveTowards(x, z, speed * 1F);
 			}
 			
 			if(GameOptions.KEY_MOVE_BACKWARD.isPressed())
 			{
-				float x = tarX;
-				float z = tarZ;
+				double x = tarX;
+				double z = tarZ;
 				moveTowards(x, z, speed * -0.8F);
 			}
 			
 			if(GameOptions.KEY_MOVE_LEFT.isPressed())
 			{
-				float x = MathHelper.sinFromDeg(rotYaw + 90F);
-				float z = MathHelper.cosFromDeg(rotYaw + 90F);
+				double x = MathHelper.sinFromDeg(rotYaw + 90F);
+				double z = MathHelper.cosFromDeg(rotYaw + 90F);
 				moveTowards(x, z, speed * 0.6F);
 			}
 			
 			if(GameOptions.KEY_MOVE_RIGHT.isPressed())
 			{
-				float x = MathHelper.sinFromDeg(rotYaw - 90F);
-				float z = MathHelper.cosFromDeg(rotYaw - 90F);
+				double x = MathHelper.sinFromDeg(rotYaw - 90F);
+				double z = MathHelper.cosFromDeg(rotYaw - 90F);
 				moveTowards(x, z, speed * 0.6F);
 			}
 			
@@ -154,7 +155,7 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 			worldObj.player = new EntityPlayerSP(worldObj);
 		}
 		
-		distanceMovedH = MathHelper.dist(0F, 0F, motX, motZ);
+		distanceMovedH = MathHelper.dist(0D, 0F, motX, motZ);
 		distanceMovedT = MathHelper.dist(0F, 0F, 0F, motX, motY, motZ);
 		
 		Renderer3D.FOV = 75F + runFovDelta - zoomFovDelta;
@@ -170,6 +171,11 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 		if(hurtTimer < 0F) hurtTimer = 0F;
 		
 		if(t.tick % t.TPS == 0 && health < 100) health++;
+		
+		if(Mouse.isButtonDown(1) && t.tick % 3 == 0)
+		{
+			executeCommand("spawn box");
+		}
 	}
 	
 	public void executeCommand(String s)

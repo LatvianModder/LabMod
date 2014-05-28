@@ -53,7 +53,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		super.onLoaded();
 		
 		Renderer.loadTexturesSmooth = true;
-		Font.inst = new Font(Renderer.getTexture("gui/fontLabMod.png"));
+		Font.inst = new Font(Renderer.getTexture("gui/font.png"));
 		Font.inst.shadowEnabled = false;
 		Renderer.loadTexturesSmooth = false;
 		

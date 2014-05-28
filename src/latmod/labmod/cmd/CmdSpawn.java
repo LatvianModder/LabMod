@@ -19,7 +19,7 @@ public class CmdSpawn extends Command
 			e.setPos(pos.posX, pos.posY, pos.posZ);
 			w.spawnEntity(e);
 			
-			print("Spawned '" + args[0] + "' @ " + LatCore.stripFloat(pos.posX, pos.posY, pos.posZ));
+			print("Spawned '" + args[0] + "' @ " + LatCore.stripDouble(pos.posX, pos.posY, pos.posZ));
 			return null;
 		}
 		

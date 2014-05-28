@@ -11,9 +11,7 @@ public class GuiSingleplayer extends GuiBasic
 	{
 		Button.setCentred(true, false);
 		addButton(0, width / 2, height - 56, 200, 48, "Back");
-		
-		Main.inst.openWorld();
-		Main.inst.openGui(null);
+		addButton(1, width / 2, 40, 200, 48, "New world");
 	}
 	
 	public void onWidgetEvent(int i, Widget w, String event, Object... args)
@@ -21,6 +19,7 @@ public class GuiSingleplayer extends GuiBasic
 		if(event == Button.PRESSED)
 		{
 			if(i == 0) Main.inst.openGui(null);
+			else if(i == 1) Main.inst.openWorld();
 		}
 	}
 }

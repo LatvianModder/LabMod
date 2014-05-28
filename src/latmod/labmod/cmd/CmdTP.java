@@ -14,7 +14,7 @@ public class CmdTP extends Command
 			float z = Float.parseFloat(args[2]);
 			
 			ep.setPos(x, y, z);
-			print("Teleported to " + LatCore.stripFloat(x, y, z));
+			print("Teleported to " + LatCore.stripDouble(x, y, z));
 			
 			return null;
 		}

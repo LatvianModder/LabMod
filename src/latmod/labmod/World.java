@@ -10,10 +10,10 @@ public class World
 {
 	public String serverName = "Loading...";
 	public FastList<AABB> AABBList = new FastList<AABB>();
-	public float width, depth;
+	public double width, depth;
 	public long nextEWID = 0L;
 	public long tick = 0L;
-	public float gravity = 0.007F;
+	public double gravity = 0.007F;
 	
 	public FastMap<Long, Entity> entities = new FastMap<Long, Entity>();
 	public FastMap<Long, Entity> entitiesToBeAdded = new FastMap<Long, Entity>();
@@ -39,12 +39,12 @@ public class World
 		
 		collBoxes = new AABB[]
 		{
-			new AABB.Corner(0F, -1F, 0F, width, 1F, depth), // Floor
+			new AABB.Corner(0D, -1D, 0D, width, 1D, depth), // Floor
 			//new AABB.Corner(0F, height, 0F, width, 1F, depth), // Ceiling
-			new AABB.Corner(0F, 0F, -1F, width, height, 1F), // Wall Z-
-			new AABB.Corner(0F, 0F, depth, width, height, 1F), // Wall Z+
-			new AABB.Corner(-1F, 0F, 0F, 1F, height, depth), // Wall X-
-			new AABB.Corner(width, 0F, 0F, 1F, height, depth), // Wall X+
+			new AABB.Corner(0D, 0D, -1D, width, height, 1D), // Wall Z-
+			new AABB.Corner(0D, 0D, depth, width, height, 1D), // Wall Z+
+			new AABB.Corner(-1D, 0D, 0D, 1D, height, depth), // Wall X-
+			new AABB.Corner(width, 0F, 0D, 1D, height, depth), // Wall X+
 		};
 	}
 	
@@ -92,18 +92,23 @@ public class World
 		AABBList.add(e.collisionBox);
 	}
 	
-	public final AABB getAABBAtPoint(float x, float y, float z)
+	public final AABB getAABBAtPoint(double x, double y, double z)
 	{ return AABB.getAABBAtPoint(AABBList, x, y, z); }
 	
-	public final AABB getAABBInBox(AABB pos, float x, float y, float z)
+	public final AABB getAABBInBox(AABB pos, double x, double y, double z)
 	{ return AABB.getAABBInBox(AABBList, pos, x, y, z); }
 	
-	public final FastList<AABB> getAllAABBsInBox(AABB pos, float x, float y, float z)
+	public final FastList<AABB> getAllAABBsInBox(AABB pos, double x, double y, double z)
 	{ return AABB.getAllAABBsInBox(AABBList, pos, x, y, z); }
 	
-	public final FastList<AABB> getAllAABBsAtPoint(float x, float y, float z)
+	public final FastList<AABB> getAllAABBsAtPoint(double x, double y, double z)
 	{ return AABB.getAllAABBsAtPoint(AABBList, x, y, z); }
 	
 	public final Entity getFromWID(long wid)
 	{ return entities.get(wid); }
+	
+	public AABB rayTrace(AABB ignore, Vertex pos, Vertex look)
+	{
+		return null;
+	}
 }

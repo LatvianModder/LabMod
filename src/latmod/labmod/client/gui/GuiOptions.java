@@ -36,7 +36,7 @@ public class GuiOptions extends GuiBasic
 			if(i == 2)
 			{
 				GameOptions.props.rotSens = ((Slider)w).value;
-				w.setText("Mouse Sens: " + (int)(GameOptions.props.rotSens * 100F) + "%");
+				w.setText("Mouse Sens: " + (int)(GameOptions.props.rotSens * 100D) + "%");
 			}
 		}
 	}

@@ -9,7 +9,7 @@ public class CmdGravity extends Command
 	{
 		if(args != null && args.length == 1)
 		{
-			float g = MathHelper.toFloat(args[0]);
+			double g = MathHelper.toDouble(args[0]);
 			w.gravity = g;
 			print("Gravity set to " + g);
 			return null;

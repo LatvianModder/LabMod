@@ -5,20 +5,20 @@ import latmod.labmod.*;
 public abstract class EntityPlayer extends Entity
 {
 	public Cursor cursor;
-	public int health = 100;
 	public int maxHealth = 100;
-	public float hurtTimer = 0F;
-	public float distanceMovedH = 0F;
-	public float distanceMovedT = 0F;
+	public int health = maxHealth;
+	public double hurtTimer = 0F;
+	public double distanceMovedH = 0F;
+	public double distanceMovedT = 0F;
 	public boolean isRunning = false;
-	public float eyeHeight;
+	public double eyeHeight;
 	
 	public EntityPlayer(World w)
 	{
 		super(w);
-		sizeH = 0.75F;
-		sizeV = 1.75F;
-		eyeHeight = 1.65F;
+		sizeH = 0.75D;
+		sizeV = 1.75D;
+		eyeHeight = 1.65D;
 		displayName = "Player";
 		cursor = new Cursor(this);
 	}
