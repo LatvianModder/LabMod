@@ -135,7 +135,7 @@ public abstract class Entity extends Vertex
 	
 	public void readFromNBT(NBTMap map)
 	{
-		flags = MathHelper.toBool(map.getByte("Flags"));
+		flags = Converter.toBool(map.getByte("Flags"));
 		
 		Iterator<Double> doubles = map.getList("PosRot").getIterator();
 		posX = doubles.next();
@@ -150,7 +150,7 @@ public abstract class Entity extends Vertex
 	
 	public void writeToNBT(NBTMap map)
 	{
-		map.setByte("Flags", MathHelper.toInt(flags));
+		map.setByte("Flags", Converter.toInt(flags));
 		
 		NBTList doubles = new NBTList("PosRot");
 		doubles.addObj(posX);

@@ -1,10 +1,6 @@
 package latmod.labmod;
-import java.nio.ByteBuffer;
 import java.util.logging.Logger;
-
 import org.lwjgl.input.*;
-import org.lwjgl.opengl.Display;
-
 import latmod.core.input.*;
 import latmod.core.rendering.*;
 import latmod.core.sound.*;
@@ -60,21 +56,6 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		Font.inst = new Font(Renderer.getTexture("gui/font.png"));
 		Font.inst.shadowEnabled = false;
 		Renderer.loadTexturesSmooth = false;
-		
-		if(!mainArgs.keys.contains("-noicons"))
-		{
-			String iconPaths[] =
-			{
-				"gui/logo_16.png",
-				"gui/logo_32.png",
-				"gui/logo_128.png",
-			};
-			
-			ByteBuffer[] list = new ByteBuffer[iconPaths.length];
-			for(int i = 0; i < iconPaths.length; i++)
-			list[i] = Renderer.getTexture(iconPaths[i]).getAsByteBuffer();
-			Display.setIcon(list);
-		}
 		
 		//if(mainArgs.keys.contains("-fs") || mainArgs.keys.contains("-fullscreen"))
 		//setFullscreen(true);

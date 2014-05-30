@@ -28,7 +28,7 @@ public abstract class Command
 		register("tp", new CmdTP());
 		register("gravity", new CmdGravity());
 		
-		Main.gameLogger.info("Loaded " + commands.size() + " command" + LatCore.numEnding(commands.size()));
+		Main.gameLogger.info("Loaded " + commands.size() + " commands");
 	}
 	
 	public static void register(String s, Command c)
