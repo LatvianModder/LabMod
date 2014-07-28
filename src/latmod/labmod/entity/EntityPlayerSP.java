@@ -71,6 +71,13 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 	public void onRender()
 	{
 		super.onRender();
+		
+		Color.WHITE.set();
+		Renderer.disableTexture();
+		Renderer.translate(cursor, 1D);
+		Renderer.scale(0.1D);
+		Renderer3D.sphere(Renderer3D.LINES, 10, 10);
+		Renderer.enableTexture();
 	}
 	
 	public void onUpdate(Timer t)
@@ -158,14 +165,15 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 		distanceMovedH = MathHelper.dist(0D, 0F, motX, motZ);
 		distanceMovedT = MathHelper.dist(0F, 0F, 0F, motX, motY, motZ);
 		
-		Renderer3D.FOV = 75F + runFovDelta - zoomFovDelta;
-		Renderer3D.setCamRot(rotYaw, rotPitch);
-		Renderer3D.camPos.posX = posX;
-		Renderer3D.camPos.posY = posY + eyeHeight;
-		Renderer3D.camPos.posZ = posZ;
-		Renderer3D.camLook.posX = posX + MathHelper.sinFromDeg(rotYaw);
-		Renderer3D.camLook.posY = posY + eyeHeight + MathHelper.tanFromDeg(rotPitch);
-		Renderer3D.camLook.posZ = posZ + MathHelper.cosFromDeg(rotYaw);
+		Renderer3D.camera.fov = 75F + runFovDelta - zoomFovDelta;
+		Renderer3D.camera.yaw = rotYaw;
+		Renderer3D.camera.pitch = rotPitch;
+		Renderer3D.camera.posX = posX;
+		Renderer3D.camera.posY = posY + eyeHeight;
+		Renderer3D.camera.posZ = posZ;
+		Renderer3D.camera.look.posX = posX + MathHelper.sinFromDeg(rotYaw);
+		Renderer3D.camera.look.posY = posY + eyeHeight + MathHelper.tanFromDeg(rotPitch);
+		Renderer3D.camera.look.posZ = posZ + MathHelper.cosFromDeg(rotYaw);
 		
 		if(hurtTimer > 0F) hurtTimer -= 0.3F;
 		if(hurtTimer < 0F) hurtTimer = 0F;
@@ -198,7 +206,7 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 			argsUnsplit = "";
 		}
 		
-		String args[] = LatCore.split(argsUnsplit, " ");
+		String args[] = LMCommon.split(argsUnsplit, " ");
 		
 		String err = null;
 		

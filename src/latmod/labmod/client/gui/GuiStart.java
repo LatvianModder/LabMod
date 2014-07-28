@@ -1,20 +1,19 @@
 package latmod.labmod.client.gui;
 import latmod.core.gui.*;
 import latmod.core.rendering.*;
-import latmod.core.util.*;
 import latmod.labmod.*;
 
 public class GuiStart extends GuiBasic
 {
 	public GuiStart()
-	{ super(null); }
+	{ super(Main.inst); }
 	
 	public void loadWidgets()
 	{
 		Button.setCentred(true, false);
 		
-		int h0 = height / 2; int h1 = 48;
-		addWidget(1, new TextButton(this, "Play",	h0 + h1 * -3).setLeftAlign(false));
+		int h0 = parent.height / 2; int h1 = 48;
+		addWidget(1, new TextButton(this, "Play",		h0 + h1 * -3).setLeftAlign(false));
 		addWidget(2, new TextButton(this, "Options",	h0 + h1 * -2).setLeftAlign(false));
 		addWidget(3, new TextButton(this, "Help",		h0 + h1 *  -1).setLeftAlign(false));
 		addWidget(0, new TextButton(this, "Exit Game",	h0 + h1 *  1).setLeftAlign(false));
@@ -28,10 +27,11 @@ public class GuiStart extends GuiBasic
 		
 		Renderer.enableTexture();
 		String txt = "LabMod";
-		double s = MathHelper.renderSin(0.03D, 0D, 3D, 3.5D);
+		//double s = renderSin(0.03D, 0D, 3D, 3.5D);
+		double s = 3D;
 		
 		Font.inst.alpha = 200;
-		Font.inst.drawText((width - Font.inst.textWidth(txt, s)) / 2F, 50F, txt, s);
+		Font.inst.drawText((parent.width - Font.inst.textWidth(txt, s)) / 2F, 50F, txt, s);
 		Font.inst.alpha = 255;
 	}
 	

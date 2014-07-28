@@ -3,7 +3,7 @@ import java.util.logging.Logger;
 import org.lwjgl.input.*;
 import latmod.core.input.*;
 import latmod.core.rendering.*;
-import latmod.core.sound.*;
+import latmod.core.res.Resource;
 import latmod.core.util.*;
 import latmod.labmod.client.ClientUtils;
 import latmod.labmod.client.entity.*;
@@ -16,9 +16,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 {
 	public static boolean startThread = true;
 	public static Main inst = null;
-	public Main() { super(defaultWidth, defaultHeight, 60); }
-	public String getTitle() { return "LabMod"; }
-	public static FastMap<String, String> mainArgs = null;
+	public Main(String[] s) { super(s, defaultWidth, defaultHeight, 60); }
 	private static int defaultWidth = 800, defaultHeight = 600;
 	public static FastList<Class<?>> allClasses = new FastList<Class<?>>();
 	private GuiBasic openedGui;
@@ -36,15 +34,8 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 			{ return GameOptions.props.logCount; }
 		};
 		
-		mainArgs = LatCore.createArgs(args);
-		defaultWidth = MathHelper.toInt(getArg("-width", "800"));
-		defaultHeight = MathHelper.toInt(getArg("-height", "600"));
-		
-		inst = new Main();
+		inst = new Main(args);
 	}
-	
-	public static String getArg(String s, String def)
-	{ String s1 = mainArgs.get(s); return (s1 == null) ? def : s1; }
 	
 	public void onLoaded()
 	{
@@ -52,19 +43,16 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		
 		super.onLoaded();
 		
-		Renderer.loadTexturesSmooth = true;
-		Font.inst = new Font(Renderer.getTexture("gui/font.png"));
+		textureManager.loadTexturesBlured = true;
+		Font.inst = new Font(Resource.getTexture("gui/font.png"));
 		Font.inst.shadowEnabled = false;
-		Renderer.loadTexturesSmooth = false;
+		textureManager.loadTexturesBlured = false;
 		
-		//if(mainArgs.keys.contains("-fs") || mainArgs.keys.contains("-fullscreen"))
-		//setFullscreen(true);
-		
-		Event.DEFAULT.addListener(this);
+		EventGroup.DEFAULT.addListener(this);
 		
 		ClientUtils.inst = new ClientUtils();
 		
-		if(mainArgs.keys.contains("-noload"))
+		if(mainArgs.getB("noload", false))
 		{
 			loadServer();
 			loadClient();
@@ -76,12 +64,12 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		}
 	}
 	
-	public static void loadServer()
+	public void loadServer()
 	{
 		long l = Time.millis();
 		gameLogger.info("Loading server...");
-		gameLogger.info("Loading all classes from: " + LatCore.getSourceDirectory(Main.class).getPath());
-		LatCore.getAllClassesInDir(Main.class, allClasses);
+		gameLogger.info("Loading all classes from: " + LMCommon.getSourceDirectory(Main.class).getPath());
+		LMCommon.getAllClassesInDir(Main.class, allClasses);
 		gameLogger.info("Totally found " + allClasses.size() + " classes for loaders");
 		
 		GameOptions.loadOptions();
@@ -91,18 +79,18 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		gameLogger.info("Done loading server in " + Time.since(l) + " seconds");
 	}
 	
-	public static void loadClient()
+	public void loadClient()
 	{
 		long l = Time.millis();
 		gameLogger.info("Loading client...");
 		
-		if(mainArgs.keys.contains("-mute")) SoundManager.setMuted(true);
+		soundManager.muted = mainArgs.getB("mute", false);
 		
 		DebugPage.loadPages();
 		
 		EntityRenderer.loadEntityRenderers();
 		
-		ClientUtils.inst.loadTextures();
+		ClientUtils.inst.loadTextures(textureManager);
 		
 		gameLogger.info("Done loading client in " + Time.since(l) + " seconds");
 	}
@@ -115,10 +103,6 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		if(worldObj != null)
 		{
 			worldObj.onUpdate(t);
-			
-			String s = LatCore.readConsole();
-			if(s != null && worldObj.player != null)
-			worldObj.player.executeCommand(s);
 		}
 	}
 	
@@ -152,31 +136,30 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		ClientUtils.inst.onUpdate();
 	}
 	
-	public Cancel onKeyPressed(int key, char keyChar)
+	public void onKeyPressed(latmod.core.input.EventKey.Pressed e)
 	{
-		if(key == Keyboard.KEY_ESCAPE)
+		if(e.key == Keyboard.KEY_ESCAPE)
 		{
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 			destroy(); else openedGui.onEscPressed();
-			return Cancel.TRUE;
+			e.cancel();
 		}
-		else if(key == GameOptions.KEY_SCREENSHOT.key)
+		else if(e.key == GameOptions.KEY_SCREENSHOT.key)
 		{
 			ClientUtils.inst.takingScreenshot = true;
-			return Cancel.TRUE;
+			e.cancel();
 		}
-		else if(key == GameOptions.KEY_FULLSCREEN.key)
+		else if(e.key == GameOptions.KEY_FULLSCREEN.key)
 		{
 			//setFullscreen(!Display.isFullscreen());
-			return Cancel.TRUE;
+			e.cancel();
 		}
-		else if(key == GameOptions.KEY_TEST.key)
+		else if(e.key == GameOptions.KEY_TEST.key)
 		{
 			if(worldObj != null && worldObj.player != null)
 			worldObj.player.executeCommand("spawn box");
+			e.cancel();
 		}
-		
-		return Cancel.FALSE;
 	}
 	
 	public void openGui(GuiBasic g)
@@ -202,8 +185,6 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		super.onResized();
 		if(openedGui != null)
 		{
-			openedGui.width = width;
-			openedGui.height = height;
 			openedGui.onUnloaded();
 			openedGui.onLoaded();
 		}

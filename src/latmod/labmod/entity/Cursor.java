@@ -13,17 +13,70 @@ public class Cursor extends Vertex
 	public Vertex relPos = new Vertex();
 	public RenderSide side = RenderSide.NONE;
 	
+	private Vertex look = new Vertex();
+	private Vertex eyePos = new Vertex();
+	
 	public Cursor(EntityPlayer e)
 	{ player = e; }
 	
 	public void update()
 	{
-		double step = 1D / 150D;
-		aabbHit = null;
-		side = RenderSide.NONE;
-		lookEntity = null;
+		MathHelper.getLook(look, player.rotYaw, player.rotPitch, maxDist);
+		eyePos.setPos(player.posX, player.posY + player.eyeHeight, player.posZ);
 		
-		Vertex dir = MathHelper.getLook(player.rotYaw, player.rotPitch);
+		aabbHit = null;
+		lookEntity = null;
+		relPos.setPos(0, 0, 0);
+		side = RenderSide.NONE;
+		dist = maxDist;
+		posX = eyePos.posX + look.posX;
+		posY = eyePos.posY + look.posY;
+		posZ = eyePos.posZ + look.posZ;
+		
+		//Mouse3D mouse0 = null;
+		Mouse3D ver0 = null;
+		
+		for(AABB aabb : player.worldObj.AABBList)
+		{
+			/*Mouse3D m = aabb.rayTrace(eyePos, look);
+			
+			if(m != null && (mouse0 == null || m.distSq < mouse0.distSq))
+			{
+				mouse0 = m;
+				mouse0.box = aabb;
+			}*/
+			
+			Mouse3D v = aabb.rayTrace(eyePos, look, maxDist);
+			//Mouse3D v = aabb.rayTrace(eyePos, look);
+			
+			if(v != null && v.dist <= maxDist)
+			{
+				if(ver0 == null || v.dist < dist)
+				{
+					ver0 = v;
+					aabbHit = aabb;
+					lookEntity = (aabbHit.owner != null && aabbHit.owner instanceof Entity) ? (Entity)aabbHit.owner : null;
+					side = v.side;
+					dist = v.dist;
+					relPos.setPos(ver0.hit);
+					setPos(ver0.pos);
+				}
+			}
+		}
+		
+		/*
+		if(mouse0 != null)
+		{
+			aabbHit = mouse0.box;
+			lookEntity = (aabbHit.owner != null && aabbHit.owner instanceof Entity) ? (Entity)aabbHit.owner : null;
+			relPos = mouse0.hit;
+			side = mouse0.face;
+			dist = MathHelper.sqrt(mouse0.distSq);
+		}
+		*/
+		
+		/*
+		double step = 1D / 150D;
 		
 		for(double d = 0F; d < 1D; d += step)
 		{
@@ -44,6 +97,7 @@ public class Cursor extends Vertex
 				return;
 			}
 		}
+		*/
 	}
 	
 	public Vertex getShakenRel(Random r, double degShake)
@@ -53,7 +107,6 @@ public class Cursor extends Vertex
 	{
 		double dYaw = r.nextFloat() * degShake - degShake / 2D;
 		double dPitch= r.nextFloat() * degShake - degShake / 2D;
-		Vertex dir = MathHelper.getLook(player.rotYaw + dYaw, player.rotPitch + dPitch);
-		return new Vertex(dir.posX * dist, dir.posY * dist, dir.posZ * dist);
+		return MathHelper.getLook(null, player.rotYaw + dYaw, player.rotPitch + dPitch, dist);
 	}
 }

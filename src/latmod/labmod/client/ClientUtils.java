@@ -1,6 +1,7 @@
 package latmod.labmod.client;
 import latmod.core.model.*;
 import latmod.core.rendering.*;
+import latmod.core.res.Resource;
 import latmod.core.util.*;
 import latmod.labmod.Main;
 import latmod.labmod.client.entity.*;
@@ -17,30 +18,40 @@ public class ClientUtils
 	
 	public ClientUtils()
 	{
-		Event.DEFAULT.addListener(this);
+		EventGroup.DEFAULT.addListener(this);
 	}
 	
-	public void loadTextures()
+	public void loadTextures(TextureManager t)
 	{
 		//TODO: Load all textures
 		
-		for(EntityRenderer r : EntityRenderer.renderMap) r.loadTextures();
-		for(DebugPage p : DebugPage.debugPages) p.loadTextures();
-		WorldRenderer.loadTextures();
+		for(EntityRenderer r : EntityRenderer.renderMap)
+		{
+			r.texManager = t;
+			r.loadTextures();
+		}
+		
+		for(DebugPage p : DebugPage.debugPages)
+		{
+			p.texManager = t;
+			p.loadTextures();
+		}
+		
+		WorldRenderer.loadTextures(t);
 	}
 	
-	public OBJModel loadModel(String s)
+	public OBJModel loadModel(Resource r)
 	{
 		try
 		{
-			OBJModel m = OBJModel.load(ClientUtils.class.getResourceAsStream(s));
-			Renderer.logger.info("Loaded model '" + s + "' with " + m.groups.size() + " groups & " + m.totalFaces.size() + " faces");
+			OBJModel m = OBJModel.load(Main.inst.resManager.getInputStream(r));
+			Renderer.logger.info("Loaded model '" + r.path + "' with " + m.groups.size() + " groups & " + m.totalFaces.size() + " faces");
 			//for(int i = 0; i < m.groupNames.length; i++)
 			//LatCore.println("[" + i + "]\t" + m.groupNames[i], "ClientUtils");
 			return m;
 		}
 		catch(Exception e)
-		{ Renderer.logger.warning("Failed to load model '" + s + "'!"); }
+		{ Renderer.logger.warning("Failed to load model '" + r.path + "'!"); }
 		
 		return null;
 	}
@@ -86,27 +97,7 @@ public class ClientUtils
 		reloadTextures = false;
 		if(reloadTextures)
 		{
-			FastList<String> tex = new FastList<String>();
-			
-			for(int i = 0; i < Renderer.textureMap.values.size(); i++)
-			{
-				Texture t = Renderer.textureMap.values.get(i);
-				
-				if(t != null && !(t instanceof TextureCustom))
-				{
-					tex.add(t.name);
-					t.destroy();
-				}
-			}
-			
 			int trl = 0;
-			
-			for(String s : tex)
-			{
-				Renderer.getTexture(s);
-				trl++;
-			}
-			
 			reloadTextures = false;
 			Renderer.logger.info("Reloaded " + trl + " textures");
 		}

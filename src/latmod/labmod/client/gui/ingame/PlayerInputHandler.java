@@ -9,9 +9,9 @@ public class PlayerInputHandler
 {
 	public static final PlayerInputHandler inst = new PlayerInputHandler();
 	
-	public Cancel keyPressed(EntityPlayerSP ep, int key, char keyChar)
+	public void keyPressed(EntityPlayerSP ep, latmod.core.input.EventKey.Pressed e)
 	{
-		KeyBinding kb = GameOptions.keyBindingFromKey(key);
+		KeyBinding kb = GameOptions.keyBindingFromKey(e.key);
 		
 		if(kb != null)
 		{
@@ -24,11 +24,12 @@ public class PlayerInputHandler
 				if(m - lm <= 300)
 				{
 					doubleKeyPressed(ep, kb);
-					return Cancel.TRUE;
+					e.cancel();
+					return;
 				}
 			}
 			
-			if(key == GameOptions.KEY_DEBUG.key)
+			if(e.key == GameOptions.KEY_DEBUG.key)
 			{
 				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
 				{
@@ -43,25 +44,24 @@ public class PlayerInputHandler
 					ep.debugPage = DebugPage.debugPages.get(id);
 				}
 			}
-			else if(key == GameOptions.KEY_CHAT.key)
+			else if(e.key == GameOptions.KEY_CHAT.key)
 			{
-				if(Main.mainArgs.keys.contains("-console"))
+				//if(Main.mainArgs.keys.contains("-console"))
 				Main.inst.openGui(new GuiChat());
 			}
-			else if(key == GameOptions.KEY_SHOP.key)
+			else if(e.key == GameOptions.KEY_SHOP.key)
 				;
-			else if(key == GameOptions.KEY_HIDE_GUI.key)
+			else if(e.key == GameOptions.KEY_HIDE_GUI.key)
 				ep.renderGui = !ep.renderGui;
 			
-			return Cancel.TRUE;
+			e.cancel();
+			return;
 		}
-		
-		return Cancel.FALSE;
 	}
 	
-	public void keyReleased(EntityPlayerSP ep, int key, long millis)
+	public void keyReleased(EntityPlayerSP ep, latmod.core.input.EventKey.Released e)
 	{
-		KeyBinding kb = GameOptions.keyBindingFromKey(key);
+		KeyBinding kb = GameOptions.keyBindingFromKey(e.key);
 		
 		if(kb != null)
 		{
@@ -75,37 +75,35 @@ public class PlayerInputHandler
 			ep.isRunning = true;
 	}
 	
-	public Cancel mousePressed(EntityPlayerSP ep, LMMouse m)
+	public void mousePressed(EntityPlayerSP ep, latmod.core.input.EventMouse.Pressed e)
 	{
-		if(!Main.inst.getGui().allowPlayerInput()) return Cancel.FALSE;
+		if(!Main.inst.getGui().allowPlayerInput()) return;
 		
 		if(ep.cursor.lookEntity != null)
 		{
-			if(m.button == 0)
+			if(e.button == 0)
 			{
 				boolean b = ep.cursor.lookEntity.onAttacked(ep, 1F);
 				if(b) ep.cursor.lookEntity.setDead();
 			}
-			else if(m.button == 1) ep.cursor.lookEntity.onRightClick(ep);
+			else if(e.button == 1) ep.cursor.lookEntity.onRightClick(ep);
 		}
-		
-		return Cancel.TRUE;
 	}
 	
-	public void mouseReleased(EntityPlayerSP ep, LMMouse m, long millis)
+	public void mouseReleased(EntityPlayerSP ep, latmod.core.input.EventMouse.Released e)
 	{
 	}
 	
-	public void mouseMoved(EntityPlayerSP ep, LMMouse m)
+	public void mouseMoved(EntityPlayerSP ep, latmod.core.input.EventMouse.Moved e)
 	{
-		ep.rotYaw -= m.DX * GameOptions.props.rotSens * 0.05F;
-		ep.rotPitch -= m.DY * GameOptions.props.rotSens * 0.05F;
+		ep.rotYaw -= e.mouse.DX * GameOptions.props.rotSens * 0.05F;
+		ep.rotPitch -= e.mouse.DY * GameOptions.props.rotSens * 0.05F;
 		
 		ep.rotYaw %= 360F;
 		ep.rotPitch = MathHelper.limit(ep.rotPitch, -89.999F, 89.999F);
 	}
 	
-	public void mouseScrolled(EntityPlayerSP ep, LMMouse m)
+	public void mouseScrolled(EntityPlayerSP ep, latmod.core.input.EventMouse.Scrolled e)
 	{
 		//ep.camera.zoom -= m.scroll * 0.5F;
 		//ep.camera.zoom = MathHelper.limit(ep.camera.zoom, 2F, 10F);

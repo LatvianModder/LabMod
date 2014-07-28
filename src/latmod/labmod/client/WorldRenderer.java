@@ -1,6 +1,7 @@
 package latmod.labmod.client;
 import latmod.core.model.*;
 import latmod.core.rendering.*;
+import latmod.core.res.Resource;
 import latmod.core.util.*;
 import latmod.labmod.*;
 import latmod.labmod.client.particles.*;
@@ -18,14 +19,20 @@ public class WorldRenderer
 	public Color skyColor = Color.get(0xFF0F0F0F);
 	
 	public static OBJModel skybox;
-	public static Texture skyboxTex;
+	public static final Resource skyboxTex = Resource.getTexture("world/skybox.png");
+	public static final Resource grassTex = Resource.getTexture("world/grass.png");
+	public static final Resource particlesTex = Resource.getTexture("world/particles.png");
 	
-	public static void loadTextures()
+	public static void loadTextures(TextureManager t)
 	{
-		skybox = ClientUtils.inst.loadModel("/models/skybox.obj");
-		Renderer.loadTexturesSmooth = true;
-		skyboxTex = Renderer.getTexture("world/skybox.png");
-		Renderer.loadTexturesSmooth = false;
+		skybox = ClientUtils.inst.loadModel(Resource.getModel("world/skybox.obj"));
+		
+		Main.inst.textureManager.loadTexturesBlured = true;
+		t.getTexture(skyboxTex);
+		Main.inst.textureManager.loadTexturesBlured = false;
+		
+		t.getTexture(grassTex);
+		t.getTexture(particlesTex);
 	}
 	
 	public WorldRenderer(World w)
@@ -60,11 +67,11 @@ public class WorldRenderer
 			
 			Renderer3D.disableDepth();
 			Renderer.push();
-			Renderer.translate(Renderer3D.camPos, 1F);
-			Renderer.scale(30F);
+			Renderer.translate(Renderer3D.camera, 1D);
+			Renderer.scale(30D);
 			
 			Renderer3D.disableCulling();
-			Renderer.setTexture(skyboxTex);
+			Main.inst.textureManager.setTexture(skyboxTex);
 			skybox.renderAll();
 			
 			Renderer.pop();
@@ -76,8 +83,8 @@ public class WorldRenderer
 		
 		{
 			Color.clear();
-			Renderer.setTexture("world/grass.png");
-			Renderer.plane(0F, 0F, 0F, worldObj.width, worldObj.depth, 0F, 0F, worldObj.width, worldObj.depth);
+			Main.inst.textureManager.setTexture(grassTex);
+			Renderer3D.plane(0D, 0D, 0D, worldObj.width, worldObj.depth, 0D, 0D, worldObj.width, worldObj.depth);
 		}
 		
 		Renderer3D.enableCulling();
@@ -101,7 +108,7 @@ public class WorldRenderer
 		
 		Renderer.enableTexture();
 		
-		Renderer.setTexture("gui/particles.png");
+		Main.inst.textureManager.setTexture(particlesTex);
 		
 		for(Particle p : particles[PartLayer.TEX.INDEX]) if(p != null && p.isVisible())
 		{ p.onRender(); renderedParticles++; }

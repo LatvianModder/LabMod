@@ -10,8 +10,8 @@ public class GuiPause extends GuiBasic
 	public void loadWidgets()
 	{
 		int w = 340;
-		int x = width / 2;
-		int h = height / 12;
+		int x = parent.width / 2;
+		int h = parent.height / 12;
 		
 		Button.setCentred(true, true);
 		

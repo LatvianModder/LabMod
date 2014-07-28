@@ -3,16 +3,19 @@ import java.util.Random;
 
 import latmod.core.gui.*;
 import latmod.core.rendering.*;
+import latmod.core.res.Resource;
 import latmod.labmod.*;
 
 public abstract class GuiBasic extends Gui
 {
-	public int width, height;
 	public Class<? extends GuiBasic> prevGui = null;
+	public TextureManager texManager;
 	
 	public GuiBasic(Main m)
 	{
 		super(m);
+		
+		texManager = m.textureManager;
 		
 		if(stars == null)
 		{
@@ -48,7 +51,7 @@ public abstract class GuiBasic extends Gui
 				renderStars();
 				Renderer.disableTexture();
 				Color.BLACK.set(200);
-				Renderer.rect(0, 0, width, height);
+				Renderer.rect(0, 0, parent.width, parent.height);
 				Renderer.enableTexture();
 			}
 		}
@@ -56,7 +59,7 @@ public abstract class GuiBasic extends Gui
 		{
 			Renderer.disableTexture();
 			Color.BLACK.set(50);
-			Renderer.rect(0, 0, width, height);
+			Renderer.rect(0, 0, parent.width, parent.height);
 			Renderer.enableTexture();
 		}
 	}
@@ -84,9 +87,9 @@ public abstract class GuiBasic extends Gui
 	public static void renderStars()
 	{
 		Renderer.enableTexture();
-		Renderer.loadTexturesSmooth = true;
-		Renderer.setTexture("gui/star.png");
-		Renderer.loadTexturesSmooth = false;
+		Main.inst.textureManager.loadTexturesBlured = true;
+		Main.inst.textureManager.setTexture(Star.texture);
+		Main.inst.textureManager.loadTexturesBlured= false;
 		Color.WHITE.set(75);
 		
 		for(int i = 0; i < stars.length; i++)
@@ -97,6 +100,8 @@ public abstract class GuiBasic extends Gui
 	
 	public static final class Star
 	{
+		public static final Resource texture = Resource.getTexture("gui/star.png");
+		
 		public static Random starRand = new Random(30920394L);
 		
 		public float posX, posY;

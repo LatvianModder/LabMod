@@ -1,10 +1,13 @@
 package latmod.labmod.client.gui;
 import latmod.core.gui.Widget;
 import latmod.core.rendering.*;
+import latmod.core.res.Resource;
 import latmod.labmod.Main;
 
 public class GuiLoadingScreen extends GuiBasic
 {
+	public static final Resource logoTex = Resource.getTexture("gui/logo_1024.png");
+	
 	public int timer = 0;
 	public boolean doneLoading = false;
 	
@@ -18,18 +21,18 @@ public class GuiLoadingScreen extends GuiBasic
 		renderStars();
 		
 		Renderer.enableTexture();
-		Renderer.loadTexturesSmooth = true;
-		Renderer.setTexture("gui/logo_1024.png");
-		Renderer.loadTexturesSmooth = false;
+		texManager.loadTexturesBlured = true;
+		texManager.setTexture(logoTex);
+		texManager.loadTexturesBlured = false;
 		Color.clear();
-		float s = height / 2F;
-		Renderer.rect((width - s) / 2F, (height - s) / 2F, s, s);
+		float s = parent.height / 2F;
+		Renderer.rect((parent.width - s) / 2F, (parent.height - s) / 2F, s, s);
 		
 		if(timer < 255)
 		{
 			Renderer.disableTexture();
 			Color.BLACK.set(255 - timer);
-			Renderer.rect(0, 0, width, height);
+			Renderer.rect(0, 0, parent.width, parent.height);
 		}
 		
 		if(timer == 255)
@@ -42,8 +45,8 @@ public class GuiLoadingScreen extends GuiBasic
 		{
 			if(!doneLoading)
 			{
-				Main.loadServer();
-				Main.loadClient();
+				Main.inst.loadServer();
+				Main.inst.loadClient();
 				doneLoading = true;
 			}
 			
@@ -51,7 +54,7 @@ public class GuiLoadingScreen extends GuiBasic
 			{
 				Renderer.disableTexture();
 				Color.BLACK.set(timer - 300);
-				Renderer.rect(0, 0, width, height);
+				Renderer.rect(0, 0, parent.width, parent.height);
 				
 				if(timer == 555)
 				{

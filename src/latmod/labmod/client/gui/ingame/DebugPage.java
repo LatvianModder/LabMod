@@ -1,4 +1,5 @@
 package latmod.labmod.client.gui.ingame;
+import latmod.core.rendering.TextureManager;
 import latmod.core.util.*;
 import latmod.labmod.Main;
 import latmod.labmod.World;
@@ -26,6 +27,8 @@ public abstract class DebugPage
 	
 	public final String name;
 	public int pageID = 0;
+	
+	public TextureManager texManager;
 	
 	public DebugPage(String s)
 	{

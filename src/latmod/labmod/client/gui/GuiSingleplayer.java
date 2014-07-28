@@ -10,8 +10,8 @@ public class GuiSingleplayer extends GuiBasic
 	public void loadWidgets()
 	{
 		Button.setCentred(true, false);
-		addButton(0, width / 2, height - 56, 200, 48, "Back");
-		addButton(1, width / 2, 40, 200, 48, "New world");
+		addButton(0, parent.width / 2, parent.height - 56, 200, 48, "Back");
+		addButton(1, parent.width / 2, 40, 200, 48, "New world");
 	}
 	
 	public void onWidgetEvent(int i, Widget w, String event, Object... args)

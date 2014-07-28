@@ -7,7 +7,7 @@ public class EntityBox extends Entity
 	public EntityBox(World w)
 	{
 		super(w);
-		setSize(0.9F, 0.9F);
+		setSize(1F, 1F);
 		displayName = "Box";
 	}
 	

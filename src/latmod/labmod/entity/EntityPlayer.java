@@ -2,7 +2,7 @@ package latmod.labmod.entity;
 import latmod.core.nbt.*;
 import latmod.labmod.*;
 
-public abstract class EntityPlayer extends Entity
+public abstract class EntityPlayer extends Entity // EntityPlayerSP
 {
 	public Cursor cursor;
 	public int maxHealth = 100;

@@ -34,7 +34,7 @@ public class Particle extends Entity
 		color.set();
 		Renderer.push();
 		Renderer.translate(this, 1F);
-		Renderer.rotate(Renderer3D.camYaw, Renderer3D.camPitch);
+		Renderer.rotate(Renderer3D.camera.yaw, Renderer3D.camera.pitch);
 		Renderer.rect(-sizeH / 2F, -sizeV / 2F, sizeH, sizeV);
 		Renderer.pop();
 	}

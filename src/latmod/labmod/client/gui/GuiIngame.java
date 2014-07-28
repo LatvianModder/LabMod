@@ -31,7 +31,7 @@ public class GuiIngame extends GuiBasic implements IKeyListener.Pressed, IKeyLis
 	}
 	
 	public GuiIngame()
-	{ super(null); }
+	{ super(Main.inst); }
 	
 	public void onRender()
 	{
@@ -62,21 +62,21 @@ public class GuiIngame extends GuiBasic implements IKeyListener.Pressed, IKeyLis
 	public void onEscPressed()
 	{ Main.inst.openGui(new GuiPause()); }
 	
-	public Cancel onKeyPressed(int key, char keyChar)
-	{ if(Main.inst.hasPlayer()) return PlayerInputHandler.inst.keyPressed(player(), key, keyChar); return Cancel.FALSE; }
+	public void onMouseMoved(latmod.core.input.EventMouse.Moved e)
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mouseMoved(player(), e); }
 	
-	public void onKeyReleased(int key)
-	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.keyReleased(player(), key, 1L); }
+	public void onMouseScrolled(latmod.core.input.EventMouse.Scrolled e)
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mouseScrolled(player(), e); }
 	
-	public void onMouseScrolled(LMMouse m)
-	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mouseScrolled(player(), m); }
-
-	public void onMouseReleased(LMMouse m)
-	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mouseReleased(player(), m, 1L); }
-
-	public Cancel onMousePressed(LMMouse m)
-	{ if(Main.inst.hasPlayer()) return PlayerInputHandler.inst.mousePressed(player(), m); return Cancel.FALSE; }
+	public void onMouseReleased(latmod.core.input.EventMouse.Released e)
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mouseReleased(player(), e); }
 	
-	public void onMouseMoved(LMMouse m)
-	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mouseMoved(player(), m); }
+	public void onMousePressed(latmod.core.input.EventMouse.Pressed e)
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.mousePressed(player(), e); }
+	
+	public void onKeyReleased(latmod.core.input.EventKey.Released e)
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.keyReleased(player(), e); }
+	
+	public void onKeyPressed(latmod.core.input.EventKey.Pressed e)
+	{ if(Main.inst.hasPlayer()) PlayerInputHandler.inst.keyPressed(player(), e); }
 }

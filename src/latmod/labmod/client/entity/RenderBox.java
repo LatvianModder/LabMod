@@ -1,15 +1,17 @@
 package latmod.labmod.client.entity;
 import latmod.core.rendering.*;
+import latmod.core.res.Resource;
 import latmod.labmod.entity.*;
 
 public class RenderBox extends EntityRenderer
 {
-	public Texture box, box_mask;
+	public static final Resource boxTex = Resource.getTexture("entities/box.png");
+	public static final Resource maskTex = Resource.getTexture("entities/box_mask.png");
 	
 	public void loadTextures()
 	{
-		box = Renderer.getTexture("entities/box.png");
-		box_mask = Renderer.getTexture("entities/box_mask.png");
+		texManager.getTexture(boxTex);
+		texManager.getTexture(maskTex);
 	}
 	
 	public void renderEntity(Entity e)
@@ -21,8 +23,8 @@ public class RenderBox extends EntityRenderer
 		Renderer.scale(e.sizeH, e.sizeV, e.sizeH);
 		Renderer.enableTexture();
 		Renderer3D.enable3DAlpha();
-		Renderer.setTexture(box);
-		Renderer3D.renderBox(0F, 0F, 0F, 1F, 1F, 1F);
+		texManager.setTexture(boxTex);
+		Renderer3D.box(0F, 0F, 0F, 1F, 1F, 1F);
 		Renderer.pop();
 	}
 }

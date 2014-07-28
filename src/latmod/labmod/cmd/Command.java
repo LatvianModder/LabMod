@@ -34,7 +34,7 @@ public abstract class Command
 	public static void register(String s, Command c)
 	{
 		if(commands.keys.contains(s))
-		Main.gameLogger.info("Overriding " + LatCore.classpath(commands.get(s).getClass()) + " with " + LatCore.classpath(c.getClass()));
+		Main.gameLogger.info("Overriding " + LMCommon.classpath(commands.get(s).getClass()) + " with " + LMCommon.classpath(c.getClass()));
 		commands.put(s, c);
 	}
 	

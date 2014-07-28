@@ -10,12 +10,12 @@ public class GuiOptions extends GuiBasic
 	public void loadWidgets()
 	{
 		Button.setCentred(true, false);
-		addButton(0, width / 2, height - 56, 200, 48, "Back");
+		addButton(0, parent.width / 2, parent.height - 56, 200, 48, "Back");
 		
 		//addButton(1, width / 2, 32, 300, 48, "Something");
-		addWidget(1, new Slider(this, width / 2, 32, 300, 48, "Sound"));
+		addWidget(1, new Slider(this, parent.width / 2, 32, 300, 48, "Sound"));
 		{
-			Slider sl = new Slider(this, width / 2, 96, 300, 48, null);
+			Slider sl = new Slider(this, parent.width / 2, 96, 300, 48, null);
 			sl.setBounds(GameOptions.props.rotSens, 0.1F, 3.9F);
 			addWidget(2, sl);
 		}

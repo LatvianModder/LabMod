@@ -1,9 +1,12 @@
 package latmod.labmod.client.entity;
+import latmod.core.rendering.*;
 import latmod.core.util.*;
 import latmod.labmod.entity.*;
 
 public abstract class EntityRenderer
 {
+	public TextureManager texManager;
+	
 	public abstract void renderEntity(Entity e);
 	public abstract void loadTextures();
 	

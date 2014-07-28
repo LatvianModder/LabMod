@@ -29,14 +29,14 @@ public class EntityID implements Comparable<EntityID>
 	{
 		if(c == null && s != null) return "Class for '" + s + "' can't be null!";
 		
-		String sc = LatCore.classpath(c);
+		String sc = LMCommon.classpath(c);
 		
 		if(id < 1 || id > 32767) return "Entity ID " + id + " for '" + sc + "' is < 1 or > 32767!";
 		if(entityList.contains(id))
-		return "Entity ID " + id + " for '" + LatCore.classpath(c) + "' already registred by '" + entityList.get(id).classPath + "'!";
+		return "Entity ID " + id + " for '" + LMCommon.classpath(c) + "' already registred by '" + entityList.get(id).classPath + "'!";
 		
 		if(s != null && entityList.contains(s))
-		return "Entity Name '" + s + "' for '" + LatCore.classpath(c) + "' already registred by '" + entityList.get(id).classPath + "'!";
+		return "Entity Name '" + s + "' for '" + LMCommon.classpath(c) + "' already registred by '" + entityList.get(id).classPath + "'!";
 		
 		try
 		{
@@ -66,7 +66,7 @@ public class EntityID implements Comparable<EntityID>
 		entityID = i;
 		entityName = s;
 		entityClass = c;
-		classPath = LatCore.classpath(c);
+		classPath = LMCommon.classpath(c);
 	}
 	
 	public Entity createNewEntity(World w) throws Exception
@@ -100,5 +100,5 @@ public class EntityID implements Comparable<EntityID>
 	{ return Integer.compare(entityID, o.entityID); }
 	
 	public String toString()
-	{ return LatCore.strip(entityID, entityName, classPath); }
+	{ return LMCommon.strip(entityID, entityName, classPath); }
 }
