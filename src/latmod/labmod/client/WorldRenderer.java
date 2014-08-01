@@ -82,7 +82,7 @@ public class WorldRenderer
 		//Renderer3D.drawFog(10F, 30F, Color.WHITE);
 		
 		{
-			Color.clear();
+			Color.reset();
 			Main.inst.textureManager.setTexture(grassTex);
 			Renderer3D.plane(0D, 0D, 0D, worldObj.width, worldObj.depth, 0D, 0D, worldObj.width, worldObj.depth);
 		}

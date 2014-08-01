@@ -30,9 +30,9 @@ public class GuiStart extends GuiBasic
 		//double s = renderSin(0.03D, 0D, 3D, 3.5D);
 		double s = 3D;
 		
-		Font.inst.alpha = 200;
-		Font.inst.drawText((parent.width - Font.inst.textWidth(txt, s)) / 2F, 50F, txt, s);
-		Font.inst.alpha = 255;
+		parent.font.alpha = 200;
+		parent.font.drawText((parent.width - parent.font.textWidth(txt, s)) / 2F, 50F, txt, s);
+		parent.font.alpha = 255;
 	}
 	
 	public boolean doRenderStars()

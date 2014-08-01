@@ -11,24 +11,24 @@ public class GuiChat extends GuiBasic implements IKeyListener.Pressed
 {
 	public String text = "";
 	
-	public GuiChat() { super(null); }
+	public GuiChat() { super(Main.inst); }
 	public void loadWidgets() { Keyboard.enableRepeatEvents(true); }
 	public void onDestroyed() { Keyboard.enableRepeatEvents(false); }
 	
 	public void onRender()
 	{
 		Renderer.disableTexture();
-		Color.BLACK.set(100);
+		Color.set(Color.BLACK, 100);
 		Renderer.rect(0, parent.height - 24, parent.width, 24);
 		Renderer.enableTexture();
-		Color.clear();
+		Color.reset();
 		
 		String txt = text;
 		if(Time.millis() % 1000 > 500) txt += '_';
-		Font.inst.drawShadedText(4, parent.height - 20, txt);
+		parent.font.drawShadedText(4, parent.height - 20, txt);
 		
 		int s = GuiIngame.allChat.size(); for(int i = 0; i < s; i++)
-		Font.inst.drawShadedText(4, parent.height - 4 - s * 20 + 20 * (i - 1), GuiIngame.allChat.get(i));
+			parent.font.drawShadedText(4, parent.height - 4 - s * 20 + 20 * (i - 1), GuiIngame.allChat.get(i));
 	}
 	
 	public void onWidgetEvent(int i, Widget w, String event, Object... args)

@@ -33,7 +33,6 @@ public class ClientUtils
 		
 		for(DebugPage p : DebugPage.debugPages)
 		{
-			p.texManager = t;
 			p.loadTextures();
 		}
 		
@@ -44,7 +43,7 @@ public class ClientUtils
 	{
 		try
 		{
-			OBJModel m = OBJModel.load(Main.inst.resManager.getInputStream(r));
+			OBJModel m = OBJModel.load(Main.inst.resManager, r);
 			Renderer.logger.info("Loaded model '" + r.path + "' with " + m.groups.size() + " groups & " + m.totalFaces.size() + " faces");
 			//for(int i = 0; i < m.groupNames.length; i++)
 			//LatCore.println("[" + i + "]\t" + m.groupNames[i], "ClientUtils");
@@ -77,7 +76,7 @@ public class ClientUtils
 		{
 			Renderer.disableTexture();
 			Renderer.enableSmooth();
-			Color.WHITE.set(200);
+			Color.set(Color.WHITE, 200);
 			float d = 32F;
 			float d1 = d / 2F + 4F;
 			float r = Main.inst.renderTick * 0.61F;

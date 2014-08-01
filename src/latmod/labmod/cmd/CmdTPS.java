@@ -15,10 +15,7 @@ public class CmdTPS extends Command
 			
 			if(i > 0 && i <= 1000)
 			{
-				Main.inst.updateTimer.onDestroyed();
-				Main.inst.updateTimer = null;
-				Main.inst.updateTimer = new Timer(Main.inst, i);
-				Main.inst.updateTimer.start();
+				Main.inst.updateTimer.restart(i);
 				return null;
 			}
 		}

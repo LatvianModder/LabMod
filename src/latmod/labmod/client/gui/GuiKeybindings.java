@@ -4,9 +4,9 @@ import latmod.labmod.Main;
 
 public class GuiKeybindings extends GuiBasic
 {
-	public GuiKeybindings(Main m)
+	public GuiKeybindings()
 	{
-		super(m);
+		super(Main.inst);
 	}
 
 	public void onWidgetEvent(int i, Widget w, String event, Object... args)

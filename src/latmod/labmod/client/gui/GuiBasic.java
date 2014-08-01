@@ -9,13 +9,10 @@ import latmod.labmod.*;
 public abstract class GuiBasic extends Gui
 {
 	public Class<? extends GuiBasic> prevGui = null;
-	public TextureManager texManager;
 	
 	public GuiBasic(Main m)
 	{
 		super(m);
-		
-		texManager = m.textureManager;
 		
 		if(stars == null)
 		{
@@ -50,7 +47,7 @@ public abstract class GuiBasic extends Gui
 			{
 				renderStars();
 				Renderer.disableTexture();
-				Color.BLACK.set(200);
+				Color.set(Color.BLACK, 200);
 				Renderer.rect(0, 0, parent.width, parent.height);
 				Renderer.enableTexture();
 			}
@@ -58,7 +55,7 @@ public abstract class GuiBasic extends Gui
 		else
 		{
 			Renderer.disableTexture();
-			Color.BLACK.set(50);
+			Color.set(Color.BLACK, 50);
 			Renderer.rect(0, 0, parent.width, parent.height);
 			Renderer.enableTexture();
 		}
@@ -90,12 +87,12 @@ public abstract class GuiBasic extends Gui
 		Main.inst.textureManager.loadTexturesBlured = true;
 		Main.inst.textureManager.setTexture(Star.texture);
 		Main.inst.textureManager.loadTexturesBlured= false;
-		Color.WHITE.set(75);
+		Color.set(Color.WHITE, 75);
 		
 		for(int i = 0; i < stars.length; i++)
 		if(stars[i] != null) stars[i].render();
 		
-		Color.clear();
+		Color.reset();
 	}
 	
 	public static final class Star

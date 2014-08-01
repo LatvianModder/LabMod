@@ -16,8 +16,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 {
 	public static boolean startThread = true;
 	public static Main inst = null;
-	public Main(String[] s) { super(s, defaultWidth, defaultHeight, 60); }
-	private static int defaultWidth = 800, defaultHeight = 600;
+	public Main(String[] s) { super(s, 800, 600, 60); }
 	public static FastList<Class<?>> allClasses = new FastList<Class<?>>();
 	private GuiBasic openedGui;
 	public World worldObj = null;
@@ -43,9 +42,11 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		
 		super.onLoaded();
 		
+		setTitle("LabMod");
+		
 		textureManager.loadTexturesBlured = true;
-		Font.inst = new Font(Resource.getTexture("gui/font.png"));
-		Font.inst.shadowEnabled = false;
+		font = new Font(Resource.getTexture("gui/font.png"));
+		font.shadowEnabled = false;
 		textureManager.loadTexturesBlured = false;
 		
 		EventGroup.DEFAULT.addListener(this);
@@ -98,11 +99,11 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 	public boolean doStartThread()
 	{ return startThread; }
 	
-	public void onFrameUpdate(Timer t)
+	public void onUpdate()
 	{
 		if(worldObj != null)
 		{
-			worldObj.onUpdate(t);
+			worldObj.onUpdate(updateTimer);
 		}
 	}
 	
@@ -118,7 +119,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 			{
 				worldObj.worldRenderer.preRender();
 				Renderer.enter3D();
-				Color.clear();
+				Color.reset();
 				worldObj.worldRenderer.onRender();
 				worldObj.worldRenderer.postRender();
 			}
@@ -128,7 +129,7 @@ public class Main extends LMFrame implements IKeyListener.Pressed
 		
 		// Render 2D Stuff //
 		Renderer.enter2D();
-		Color.clear();
+		Color.reset();
 		
 		if(worldObj != null && worldObj.player != null) worldObj.player.renderGui();
 		openedGui.onRender();

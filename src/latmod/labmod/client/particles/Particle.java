@@ -31,7 +31,7 @@ public class Particle extends Entity
 	
 	public void onRender()
 	{
-		color.set();
+		Color.set(color);
 		Renderer.push();
 		Renderer.translate(this, 1F);
 		Renderer.rotate(Renderer3D.camera.yaw, Renderer3D.camera.pitch);

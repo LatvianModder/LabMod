@@ -1,5 +1,6 @@
 package latmod.labmod.entity;
 import org.lwjgl.input.Mouse;
+
 import latmod.core.rendering.*;
 import latmod.core.util.*;
 import latmod.labmod.*;
@@ -37,7 +38,7 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 		Renderer.enableTexture();
 		
 		boolean chatOpened = Main.inst.getGui() instanceof GuiChat;
-		Font.inst.alpha = chatOpened ? 40 : 200;
+		Main.inst.font.alpha = chatOpened ? 40 : 200;
 		
 		if(debugPage != null)
 		{
@@ -47,17 +48,17 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 			debugPage.addInfo(worldObj, this, al);
 			
 			for(int i = 0; i < al.size(); i++)
-			Font.inst.drawShadedText(4, 4 + i * 20, al.get(i));
+				Main.inst.font.drawShadedText(4, 4 + i * 20, al.get(i));
 			
 			if(debugPage != null)
 			debugPage.onCustom2DRender(worldObj, this);
 		}
 		
-		Font.inst.alpha = 255;
+		Main.inst.font.alpha = 255;
 		
 		{
 			if(cursor.lookEntity != null && cursor.lookEntity != null && cursor.lookEntity.isGreenDot(this))
-			DOT_GREEN.set(); else DOT_RED.set();
+				Color.set(DOT_GREEN); else Color.set(DOT_RED);
 			
 			Renderer.disableTexture();
 			Renderer.lineWidth(4F);
@@ -72,7 +73,7 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 	{
 		super.onRender();
 		
-		Color.WHITE.set();
+		Color.reset();
 		Renderer.disableTexture();
 		Renderer.translate(cursor, 1D);
 		Renderer.scale(0.1D);

@@ -26,19 +26,19 @@ public class DPIngame extends DebugPage
 			for(int i = 0; i < GuiIngame.visibleChat.size(); i++)
 			{
 				Message m = GuiIngame.visibleChat.get(i);
-				Font.inst.alpha = Math.min(m.tick, 255);
-				Font.inst.drawShadedText(4, Main.inst.height - 4 - 20 * (i + 2), m.text);
+				Main.inst.font.alpha = Math.min(m.tick, 255);
+				Main.inst.font.drawShadedText(4, Main.inst.height - 4 - 20 * (i + 2), m.text);
 			}
 		}
 		
-		Font.inst.alpha = 255;
+		Main.inst.font.alpha = 255;
 		Renderer.disableTexture();
 		
 		{
 			int bw = 50;
 			int bh = 90;
 			
-			Color.GREEN.set(75);
+			Color.set(Color.GREEN, 75);
 			Renderer.rect(Main.inst.width - bw - 8, Main.inst.height - bh - 8, bw, bh);
 		}
 		
