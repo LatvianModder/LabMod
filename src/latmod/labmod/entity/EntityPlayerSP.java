@@ -73,12 +73,15 @@ public class EntityPlayerSP extends EntityPlayer // Entity
 	{
 		super.onRender();
 		
-		Color.reset();
-		Renderer.disableTexture();
-		Renderer.translate(cursor, 1D);
-		Renderer.scale(0.1D);
-		Renderer3D.sphere(Renderer3D.LINES, 10, 10);
-		Renderer.enableTexture();
+		if(debugPage instanceof DPPlayer)
+		{
+			Color.reset();
+			Renderer.disableTexture();
+			Renderer.translate(cursor, 1D);
+			Renderer.scale(0.1D);
+			Renderer3D.sphere(Renderer3D.LINES, 10, 10);
+			Renderer.enableTexture();
+		}
 	}
 	
 	public void onUpdate(Timer t)

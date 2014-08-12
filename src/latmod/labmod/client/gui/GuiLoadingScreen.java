@@ -16,7 +16,7 @@ public class GuiLoadingScreen extends GuiBasic
 	
 	public void onRender()
 	{
-		if(Main.inst.renderTick % 3 == 0) timer++;
+		timer += 5;
 		
 		renderStars();
 		
